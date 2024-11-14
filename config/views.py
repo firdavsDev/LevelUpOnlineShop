@@ -18,4 +18,4 @@ def hello_func(request):
 
 
 def home_page(request):
-    return render(request, "index.html")
+    return render(request, "order_complete.html")

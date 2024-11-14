@@ -10,7 +10,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # cusom urls
     path("hello/", hello_func),
-    path("home/", home_page),
+    path("home_page/", home_page),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
