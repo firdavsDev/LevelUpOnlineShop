@@ -11,11 +11,5 @@ from django.shortcuts import render
 """
 
 
-def hello_func(request):
-    # return JsonResponse(data={"message": "Hello world"})
-    # return HttpResponse(content="<h1>Hello world</h1>")
-    return render(request, "hello_page.html")
-
-
 def home_page(request):
-    return render(request, "order_complete.html")
+    return render(request, "index.html")

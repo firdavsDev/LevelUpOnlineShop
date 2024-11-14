@@ -28,7 +28,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Custom apps
+    "accounts",
 ]
+
+# Custom user model
+AUTH_USER_MODEL = "accounts.CustomUser"  # Default Django.User
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -39,7 +45,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
