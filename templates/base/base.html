@@ -1,21 +1,22 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-        {% include "base/head.html" %}
+{% include "base/head.html" %}
 
-    <body>
+<body>
 
-        {% include "base/header.html" %}
+    {% include "base/header.html" %}
+
+    {% include "base/message.html" %}
+
+    {% block content %}
+
+    <!--commented out for now-->
+
+    {% endblock content %}
 
 
-        {% block content %}
-
-        <!--commented out for now-->
-
-        {% endblock content %}
-
-
-        {% include "base/footer.html" %}
-    </body>
+    {% include "base/footer.html" %}
+</body>
 
 </html>

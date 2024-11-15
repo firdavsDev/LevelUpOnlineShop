@@ -18,3 +18,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.email}"
+
+    class Meta:
+        verbose_name = _("CustomUser")
+        verbose_name_plural = _("CustomUsers")
