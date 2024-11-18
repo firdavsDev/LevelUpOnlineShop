@@ -1,12 +1,36 @@
 from django.contrib import messages  # for send messages to frontend
 from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login as auth_login
 
 from .models import CustomUser
 
 
 def login(request):
-    return render(request, "accounts/login.html")
+    if request.method == "POST":
+        print("######################################################################################")
+        user_email = request.POST.get('email')
+        user_password = request.POST.get('password')
+        print(user_email)
+        print(user_password)
 
+        #here we filter user model
+        have =  CustomUser.objects.filter(email=user_email).exists()
+        #here check
+        if  have != True:
+            messages.error(request, 'Invalid Email')
+            return redirect("login")
+        
+        user = authenticate(username=user_email, email=user_email, password=user_password)
+        print("user",user)
+        
+        if user is None:
+            messages.error(request, "Invalid Password")
+            return redirect("login")
+        else:
+            auth_login(request, user)
+            return redirect('home_page')
+        
+    return render(request, 'accounts/login.html')
 
 def register(request):
     if request.method == "POST":
@@ -27,6 +51,7 @@ def register(request):
             return redirect("register")
 
         user_obj = CustomUser.objects.create(
+            username=user_email,
             first_name=f_name,
             last_name=l_name,
             email=user_email,
