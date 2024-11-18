@@ -67,17 +67,40 @@
                 <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
                         <div class="widget-header">
+
+                            {% if request.user.is_authenticated and request.user.is_staff %}
+
+                            <small class="title text-muted">Welcome Admin!</small>
+                            <div>
+                                <a href="{% url 'admin:index' %}">Admin</a>
+                                <span class="dark-transp"> | </span>
+                                <a href="{% url 'logout' %}">Logout</a>
+
+                            </div>
+
+                            {% elif request.user.is_authenticated %}
+                            <small class="title text-muted">Welcome {{ request.user.first_name }}
+                                {{ request.user.last_name }}
+                            </small>
+                            <div>
+
+                                <a href="{% url 'logout' %}">Logout</a>
+                                <span class="dark-transp"> | </span>
+                                <a href="#">Profile</a>
+
+                            </div>
+
+                            {% else %}
                             <small class="title text-muted">Welcome guest!</small>
                             <div>
 
-                                {% comment %}
-                                {% url 'url_name' %}
-                                {% endcomment %}
-
-                                <a href="{% url 'login' %}">Login</a> <span class="dark-transp"> | </span>
+                                <a href="{% url 'login' %}">Login</a>
+                                <span class="dark-transp"> | </span>
                                 <a href="{% url 'register' %}"> Register</a>
 
                             </div>
+                            {% endif %}
+
                         </div>
                         <a href="./cart.html" class="widget-header pl-3 ml-3">
                             <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i>

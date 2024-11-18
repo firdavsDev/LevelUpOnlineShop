@@ -12,4 +12,5 @@ from django.shortcuts import render
 
 
 def home_page(request):
-    return render(request, "index.html")
+    context = {"hello": "Hello World", "number": 123}
+    return render(request, "index.html", context)
