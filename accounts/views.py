@@ -6,7 +6,7 @@ from .forms import SimpleLoginForm
 from .models import CustomUser
 
 
-def login_view(request):
+def login_form(request):
     if request.method == "POST":
         form = SimpleLoginForm(request.POST)
         if form.is_valid():
@@ -29,7 +29,7 @@ def login_view(request):
     return render(request, "accounts/login_form.html", context)
 
 
-# def login(request):
+# def login_view(request):
 #     if request.method == "POST":
 #         user_email = request.POST.get("email")
 #         password = request.POST.get("password")

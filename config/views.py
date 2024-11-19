@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
-
-# html render
 from django.shortcuts import render
+
+from products.models import Product
 
 """
 1) HttpResponse - Bu bizga HTTP status code va String (HTML) contentni qaytaradi.
@@ -12,5 +12,6 @@ from django.shortcuts import render
 
 
 def home_page(request):
-    context = {"hello": "Hello World", "number": 123}
+    products = Product.objects.all()
+    context = {"hello": "Hello World", "number": 123, "products": products}
     return render(request, "index.html", context)
