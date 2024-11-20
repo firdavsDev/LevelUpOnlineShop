@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 
+# html render
+from django.shortcuts import render
 from products.models import Product
 
 """
@@ -13,5 +14,6 @@ from products.models import Product
 
 def home_page(request):
     products = Product.objects.all()
-    context = {"hello": "Hello World", "number": 123, "products": products}
-    return render(request, "index.html", context)
+    return render(request, "index.html", context={
+        'products': products
+    })

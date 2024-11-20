@@ -8,8 +8,8 @@ class SimpleLoginForm(forms.Form):
     # add class to email field
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["email"].widget.attrs.update({"class": "form-control"})
-        self.fields["password"].widget.attrs.update({"class": "form-control"})
+        self.fields["email"].widget.attrs.update({"class": "form-control", "placeholder": "Email Address"})
+        self.fields["password"].widget.attrs.update({"class": "form-control", "placeholder": "Password"})
 
     def clean(self):
         cleaned_data = super().clean()
