@@ -12,10 +12,22 @@
             <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
+                    <!-- if email form errors show it here -->
+                    {% if form.email.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.email.errors }}
+                    </div>
+                    {% endif %}
                     <!-- django form -->
                     {{ form.email }}
                 </div> <!-- form-group// -->
                 <div class="form-group">
+                    <!-- if password form errors show it here -->
+                    {% if form.password.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.password.errors }}
+                    </div>
+                    {% endif %}
                     <!-- django form -->
                     {{ form.password }}
                 </div> <!-- form-group// -->

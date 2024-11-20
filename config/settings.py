@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Custom apps
     "accounts",
+    "products",
 ]
 
 # Custom user model

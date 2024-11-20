@@ -11,6 +11,7 @@ urlpatterns = [
     path("", home_page, name="home"),
     # Accounts App URLs
     path("accounts/", include("accounts.urls")),
+    path("products/", include("products.urls"))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
