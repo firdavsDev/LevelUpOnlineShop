@@ -8,7 +8,7 @@ from config.views import home_page
 # hamma url shu yerda yoziladi
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", home_page),
+    path("", home_page, name="home"),
     # Accounts App URLs
     path("accounts/", include("accounts.urls")),
 ]

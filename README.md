@@ -5,7 +5,7 @@
 ## ToDo
 - [x] Login & Register templates
 - [x] Create custom user model
-- [] Login and Register Views
+- [x] Login and Register, logout Views
 - [] Login and Register Forms, validation (crispy forms)
 - [] Profile table with signals
 - [] Login with (email validation) with SMTP
