@@ -27,22 +27,37 @@
 
         <div class="row">
 
-            {% for product in Products %}
+
+            {% for product in products %}
 
             <div class="col-md-3">
                 <div class="card card-product-grid">
-                    <a href="#" class="img-wrap"> <img src="{% static 'images/items/1.jpg' %}"> </a>
+                    {% if product.image %}
+                    <a href="#" class="img-wrap"> <img src="{{ product.image.url }}"> </a>
+                    {% else %}
+                    <a href="#" class="img-wrap"> <img src="{% static 'images/items/2.jpg' %}"> </a>
+                    {% endif %}
                     <figcaption class="info-wrap">
-                        <a href="#" class="title">{{ product.name }}</a>
+                        <a href="{% url 'product_detail' product.id %}" class="title">
+                            {{ product.name }}
+                        </a>
                         <div class="price mt-1">${{product.price}}</div> <!-- price-wrap.// -->
                     </figcaption>
                 </div>
             </div> <!-- col.// -->
 
+
+            {% empty %}
+
+            <div class="col-md-12">
+
+                <center>
+                    <h5>Ma'lumotlar bazasida mahsulotlar mavjud emas</h5>
+                </center>
+
+            </div>
+
             {% endfor %}
-
-
-
 
         </div> <!-- row.// -->
 
