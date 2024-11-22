@@ -6,10 +6,11 @@ from .models import Category, Product, ProductIMG
 def products(request):
     products = Product.objects.filter(is_active=True)
     categorys = Category.objects.filter(is_active=True)
+    product_images = ProductIMG.objects.all()
     return render(
         request,
         "store/products.html",
-        context={"products": products, "categorys": categorys},
+        context={"products": products, "categorys": categorys, "product_images": product_images},
     )
 
 
@@ -23,4 +24,5 @@ def product_detail(request, product_id):
         context = {"product": product, "product_images": product_images}
         return render(request, "store/product-detail.html", context=context)
     except Product.DoesNotExist:
-        return redirect("store")
+        context = {"product": product, "product_images": product_images}
+        return redirect("store", context=context)

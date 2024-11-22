@@ -25,7 +25,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    # add meta class
+    class Meta:
+        verbose_name_plural = "Kategoriyalar"
+        verbose_name = "Kategoriya"
 
 
 class Product(models.Model):
@@ -72,4 +74,28 @@ class ProductIMG(models.Model):
     def __str__(self):
         return self.product.name
 
-    # TODO class Meta:
+    class Meta:
+        verbose_name_plural = "Maxsulot rasmlari"
+        verbose_name = "Maxsulot rasmi"
+
+
+class Color(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class Size(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class ProductVariation(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='Maxsulot_nomi')
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name="Rangi")
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, related_name="Olchami")
+    stock = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.product.name} - {self.color.name} - {self.size.name}'

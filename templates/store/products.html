@@ -135,7 +135,7 @@
 							<a href="{% url 'product_detail' product.id  %}" class="img-wrap"> <img
 									src="{{ product.image.url }}"> </a>
 							{% else %}
-							<a href="#" class="img-wrap"> <img alt="product-img" src="#"> </a>
+							<a href="{% url 'product_detail' product.id  %}" class="img-wrap"> <img alt="product-img" src="#"> </a>
 							{% endif %}
 							<figcaption class="info-wrap">
 								<a href="{% url 'product_detail' product.id  %}" class="title">{{ product.name }}</a>

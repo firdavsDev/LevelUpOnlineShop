@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Category, Product, ProductIMG
+from .models import Category, Product, ProductIMG, Color, Size, ProductVariation
 
 # Simple way
 # admin.site.register(Category)
@@ -57,3 +57,27 @@ class ProductIMGAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProductIMG, ProductIMGAdmin)
+
+
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    search_fields = ["name"]
+    # date_hierarchy = "created_at"
+
+admin.site.register(Color, ColorAdmin)
+
+
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    search_fields = ["name"]
+    # date_hierarchy = "created_at"
+
+admin.site.register(Size, SizeAdmin)
+
+
+class ProductVariationAdmin(admin.ModelAdmin):
+    list_display = ["product", "color", "size", "stock"]
+    search_fields = ["product"]
+    # date_hierarchy = "created_at"
+
+admin.site.register(ProductVariation, ProductVariationAdmin)
