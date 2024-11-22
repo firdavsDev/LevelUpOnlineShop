@@ -1,6 +1,13 @@
 # Django store apps list
 
-* product app (product list, product detail, search, product category, product filter ...)
+* product app:
+    [x] product list
+    [] pagination
+    [] product variation
+    [x] product detail
+    [x] search
+    [x] product category
+    [x] product filter 20%
 * cart app (add to cart, remove from cart, update cart, cart detail ...)
 * order app (order list, order detail, order create ...)
 * comment app (comment list, comment create, comment delete, rating ...)
