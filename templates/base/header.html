@@ -41,29 +41,41 @@
                             <i class="fa fa-bars"></i> All category
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Machinery / Mechanical Parts / Tools </a>
-                            <a class="dropdown-item" href="#">Consumer Electronics / Home Appliances </a>
-                            <a class="dropdown-item" href="#">Auto / Transportation</a>
-                            <a class="dropdown-item" href="#">Apparel / Textiles / Timepieces </a>
-                            <a class="dropdown-item" href="#">Home & Garden / Construction / Lights </a>
-                            <a class="dropdown-item" href="#">Beauty & Personal Care / Health </a>
+                            {% for category in categories %}
+                            <a class="dropdown-item" href="{% url 'store' %}?category_id={{category.id}}">
+                                {{category.name}}
+                            </a>
+                            {% empty %}
+                            <a class="dropdown-item" href="#">No categories found</a>
+                            {% endfor %}
                         </div>
                     </div> <!-- category-wrap.// -->
                 </div> <!-- col.// -->
+
+
                 <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
+
                 <div class="col-lg  col-md-6 col-sm-12 col">
-                    <form action="#" class="search">
+                    <form action="{% url 'store' %}" method="get" class="search">
                         <div class="input-group w-100">
-                            <input type="text" class="form-control" style="width:60%;" placeholder="Search">
+
+                            <input name="category_id" value="{{category_id}}" type="hidden" class="form-control"
+                                style="width:20%;" placeholder="Category" id="category_id">
+
+                            <input name="search" value="{{search}}" type="text" class="form-control" style="width:60%;"
+                                placeholder="Search" id="search">
 
                             <div class="input-group-append">
+
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
+
                             </div>
                         </div>
                     </form> <!-- search-wrap .end// -->
                 </div> <!-- col.// -->
+
                 <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
                         <div class="widget-header">
@@ -112,9 +124,6 @@
             </div> <!-- row.// -->
         </div> <!-- container.// -->
     </section> <!-- header-main .// -->
-
-
-
 
 </header>
 <!-- section-header.// -->

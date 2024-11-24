@@ -13,6 +13,7 @@
 
     </div> <!-- container //  -->
 </section>
+
 <!-- ========================= SECTION MAIN END// ========================= -->
 
 <!-- ========================= SECTION  ========================= -->
@@ -27,15 +28,16 @@
 
         <div class="row">
 
-
             {% for product in products %}
 
             <div class="col-md-3">
                 <div class="card card-product-grid">
                     {% if product.image %}
-                    <a href="{% url 'product_detail' product.id %}" class="img-wrap"> <img src="{{ product.image.url }}"> </a>
+                    <a href="{% url 'product_detail' product.id %}" class="img-wrap"> <img
+                            src="{{ product.image.url }}"> </a>
                     {% else %}
-                    <a href="{% url 'product_detail' product.id %}" class="img-wrap"> <img alt="product-img" src="#"> </a>
+                    <a href="{% url 'product_detail' product.id %}" class="img-wrap"> <img alt="product-img" src="#">
+                    </a>
                     {% endif %}
                     <figcaption class="info-wrap">
                         <a href="{% url 'product_detail' product.id %}" class="title">

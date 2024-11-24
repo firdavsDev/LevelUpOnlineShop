@@ -15,12 +15,18 @@ Products Fields:
 """
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=255)
-    # common fields
+# TODO move to common app
+class BaseModel(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True  # Bu classni bazada table yaratmasin
+
+
+class Category(BaseModel):
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
@@ -30,24 +36,17 @@ class Category(models.Model):
         verbose_name = "Kategoriya"
 
 
-class Product(models.Model):
-    # 'id' is auto created and hidden field
-    name = models.CharField(max_length=255, verbose_name="Maxsulot nomi")
-    price = models.DecimalField(max_digits=10, decimal_places=2)  # 999999.99
+class Product(BaseModel):
+    name = models.CharField(
+        max_length=255, verbose_name="Maxsulot nomi"
+    )  # 'id' is auto created and hidden field
     image = models.ImageField(
         upload_to="products", help_text="Maxsulot rasmi", null=True
     )  # upload_to="products" -> media/products folder
-    size = models.CharField(max_length=255, help_text="Maxsulotni o'lchami", null=True)
-    color = models.CharField(max_length=255, help_text="Maxsulot rangi", null=True)
     description = models.TextField(
         help_text="Maxsulotni maqtab yoz"
     )  # unlimited length
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    stock = models.IntegerField()
-    # common fields
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -62,14 +61,11 @@ class Product(models.Model):
 # blank=True - Bu field formda bo'sh bo'lishi mumkin (formda required=False)
 
 
-class ProductIMG(models.Model):
+class ProductIMG(BaseModel):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE
     )  # if product deleted, all images will be deleted(cascade)
     image = models.ImageField(upload_to="products", help_text="Maxsulot rasmi")
-    # common fields
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.product.name
@@ -79,23 +75,43 @@ class ProductIMG(models.Model):
         verbose_name = "Maxsulot rasmi"
 
 
-class Color(models.Model):
+class Color(BaseModel):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
-class Size(models.Model):
+    # TODO meta class
+
+
+class Size(BaseModel):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
-class ProductVariation(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='Maxsulot_nomi')
+    # TODO meta class
+
+
+class ProductVariation(BaseModel):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="Maxsulot_nomi",
+    )
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name="Rangi")
     size = models.ForeignKey(Size, on_delete=models.CASCADE, related_name="Olchami")
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stock = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.product.name} - {self.color.name} - {self.size.name}'
+        return f"{self.product.name} - {self.color.name} - {self.size.name}"
+
+    class Meta:
+        verbose_name_plural = "Maxsulot variantlari"
+        verbose_name = "Maxsulot varianti"
+        unique_together = [
+            "product",
+            "color",
+            "size",
+        ]  # unique together bu fieldlarni birgalikda bazada takrorlanmasligini ta'minlaydi
