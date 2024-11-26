@@ -76,7 +76,7 @@
                         <h2 class="title">{{ product.name }}</h2>
 
                         <div class="mb-3">
-                            <var id="price_data" class="price h4">{{ price }}$</var>
+                            <var id="price" class="price h4">{{ price }}$</var>
                         </div>
 
                         <p>{{ product.description }}</p>
@@ -119,8 +119,22 @@
                                 <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
 
                                     <label>
-                                        <select name="color" id="color" class="form-control" style="width: 300px;">
+                                        <select name="color" id="color" class="form-control" style="width: 300px;"
+                                            onchange="getColor()">
+
                                             <option selected disabled> Please Choose color </option>
+
+                                            {% for color_variation in color_variations %}
+
+                                            <option value="{{ color_variation.color__id }}">
+                                                {{ color_variation.color__name }}
+                                            </option>
+
+                                            {% empty %}
+
+                                            <option>No Color</option>
+
+                                            {% endfor %}
 
                                         </select>
                                     </label>

@@ -1,4 +1,5 @@
 from django.db import models
+from common.models import BaseModel
 
 """
 Products Fields:
@@ -13,16 +14,6 @@ Products Fields:
 - is_active: BooleanField
 - created_at: DateTimeField
 """
-
-
-# TODO move to common app
-class BaseModel(models.Model):
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True  # Bu classni bazada table yaratmasin
 
 
 class Category(BaseModel):
@@ -63,7 +54,8 @@ class Product(BaseModel):
 
 class ProductIMG(BaseModel):
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE
+        Product, on_delete=models.CASCADE, 
+        related_name='images'
     )  # if product deleted, all images will be deleted(cascade)
     image = models.ImageField(upload_to="products", help_text="Maxsulot rasmi")
 
@@ -81,7 +73,9 @@ class Color(BaseModel):
     def __str__(self):
         return self.name
 
-    # TODO meta class
+    class Meta:
+        verbose_name_plural = "Maxsulot ranglari"
+        verbose_name = "Maxsulot rangi"
 
 
 class Size(BaseModel):
@@ -90,14 +84,16 @@ class Size(BaseModel):
     def __str__(self):
         return self.name
 
-    # TODO meta class
+    class Meta:
+        verbose_name_plural = "Maxsulot o'lchamlari"
+        verbose_name = "Maxsulot o'lchami"
 
 
 class ProductVariation(BaseModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name="Maxsulot_nomi",
+        related_name="variations",
     )
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name="Rangi")
     size = models.ForeignKey(Size, on_delete=models.CASCADE, related_name="Olchami")
