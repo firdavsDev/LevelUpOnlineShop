@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 # html render
 from django.shortcuts import render
 
-from products.models import Product
+from products.models import Product, ProductVariation
 
 """
 1) HttpResponse - Bu bizga HTTP status code va String (HTML) contentni qaytaradi.
@@ -14,5 +14,5 @@ from products.models import Product
 
 
 def home_page(request):
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.prefetch_related('variations', 'images').filter(is_active=True)
     return render(request, "index.html", context={"products": products})
