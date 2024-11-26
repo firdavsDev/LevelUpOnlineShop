@@ -55,21 +55,24 @@
 						</header>
 						<div class="filter-content collapse show" id="collapse_4">
 							<div class="card-body">
+
 								{% for size_variation in size_variations %}
 
 									<label class="checkbox-btn">
-										<input type="checkbox">
-										<span class="btn btn-light"> {{ size_variation.size__name }} </span>
+										<a href="?size_id={{ size_variation.size__id }}&search={{ search }}">
+											<span class="btn btn-light"> {{ size_variation.size__name }} </span>
+										</a>
 									</label>
 
 								{% endfor %}
+
 							</div><!-- card-body.// -->
 						</div>
 					</article> <!-- filter-group .// -->
 
 					<article class="filter-group">
 						<header class="card-header">
-							<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+							<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true">
 								<i class="icon-control fa fa-chevron-down"></i>
 								<h6 class="title">Price range </h6>
 							</a>
@@ -77,11 +80,13 @@
 						<div class="filter-content collapse show" id="collapse_3">
 							<div class="card-body">
 
+								<form action="#" method="get">
+								
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label>Min</label>
 										<!-- <input class="form-control" placeholder="$0" type="number"> -->
-										<select class="mr-2 form-control">
+										<select class="mr-2 form-control" name="min_price">
 											<option value="0">$0</option>
 											<option value="50">$50</option>
 											<option value="100">$100</option>
@@ -93,7 +98,7 @@
 									</div>
 									<div class="form-group text-right col-md-6">
 										<label>Max</label>
-										<select class="mr-2 form-control">
+										<select class="mr-2 form-control" name="max_price">
 											<option value="50">$50</option>
 											<option value="100">$100</option>
 											<option value="150">$150</option>
@@ -104,7 +109,13 @@
 										</select>
 									</div>
 								</div> <!-- form-row.// -->
+
 								<button class="btn btn-block btn-primary">Apply</button>
+
+							</form>
+								<button class="btn btn-block btn-light" onclick="clearFilters()">
+									Reset
+								</button>
 								
 							</div><!-- card-body.// -->
 						</div>
@@ -117,7 +128,7 @@
 
 				<header class="border-bottom mb-4 pb-3">
 					<div class="form-inline">
-						<span class="mr-md-auto">{{ products|length }} Items found </span>
+						<span class="mr-md-auto">{{ page_obj.paginator.count }} Items found </span>
 
 					</div>
 				</header><!-- sect-heading -->
@@ -143,18 +154,19 @@
 					</div>
 					{% empty %}
 					<center>
-						<h1>No products found</h1>
+						<h1>
+							Mahsulotlar topilmadi
+						</h1>
 					</center>
 					{% endfor %}
 				</div>
-				
 
-
+				{% comment %} pagination  {% endcomment %}
 				<nav class="mt-4" aria-label="Page navigation sample">
 					<ul class="pagination">
 						{% if page_obj.has_previous %}
 						<li class="page-item">
-							<a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+							<a class="page-link" href="?page={{ page_obj.previous_page_number }}&page-size={{page_size}}">Previous</a>
 						</li>
 						{% else %}
 						<li class="page-item disabled">
@@ -164,13 +176,13 @@
 				
 						{% for num in page_obj.paginator.page_range %}
 						<li class="page-item {% if page_obj.number == num %}active{% endif %}">
-							<a class="page-link" id="first" href="?page={{ num }}">{{ num }}</a>
+							<a class="page-link" id="first" href="?page={{ num }}&page-size={{page_size}}">{{ num }}</a>
 						</li>
 						{% endfor %}
 				
 						{% if page_obj.has_next %}
 						<li class="page-item">
-							<a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+							<a class="page-link" href="?page={{ page_obj.next_page_number }}&page-size={{page_size}}">Next</a>
 						</li>
 						{% else %}
 						<li class="page-item disabled">
@@ -188,5 +200,11 @@
 	</div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
+<script>
+	function clearFilters() {
+		window.location.href = "{% url 'store' %}";
+	}
+</script>
 
 {% endblock content %}

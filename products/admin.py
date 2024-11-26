@@ -88,6 +88,7 @@ class ProductVariationAdmin(admin.ModelAdmin):
         "created_at",
     ]
     search_fields = ["product"]
+    list_filter = ["product", "color", "size", "is_active"]
     date_hierarchy = "created_at"
     autocomplete_fields = [
         "product",

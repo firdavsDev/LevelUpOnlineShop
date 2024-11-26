@@ -7,11 +7,12 @@ from config.views import home_page
 
 # hamma url shu yerda yoziladi
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", home_page, name="home"),
+    path("admin/", admin.site.urls),
     # Accounts App URLs
     path("accounts/", include("accounts.urls")),
-    path("products/", include("products.urls"))
+    # Products App URLs
+    path("products/", include("products.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

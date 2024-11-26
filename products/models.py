@@ -1,4 +1,5 @@
 from django.db import models
+
 from common.models import BaseModel
 
 """
@@ -38,9 +39,12 @@ class Product(BaseModel):
         help_text="Maxsulotni maqtab yoz"
     )  # unlimited length
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # TODO add brand and season
+    # brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    # season = models.ManyToManyField(Season, related_name="seasons")
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.category.name}"
 
     class Meta:
         verbose_name_plural = "Maxsulotlar"  # admin panel uchun
@@ -54,8 +58,7 @@ class Product(BaseModel):
 
 class ProductIMG(BaseModel):
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, 
-        related_name='images'
+        Product, on_delete=models.CASCADE, related_name="images"
     )  # if product deleted, all images will be deleted(cascade)
     image = models.ImageField(upload_to="products", help_text="Maxsulot rasmi")
 
@@ -93,7 +96,7 @@ class ProductVariation(BaseModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name="variations",
+        related_name="variations",  # teskari chaqirish uchun yani Productdan turib usha productni varyantlarini olish uchun kerak.
     )
     color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name="Rangi")
     size = models.ForeignKey(Size, on_delete=models.CASCADE, related_name="Olchami")

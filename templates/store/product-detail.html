@@ -76,7 +76,7 @@
                         <h2 class="title">{{ product.name }}</h2>
 
                         <div class="mb-3">
-                            <var id="price" class="price h4">{{ price }}$</var>
+                            <var id="price" class="price h4">Narxi: </var>
                         </div>
 
                         <p>{{ product.description }}</p>
@@ -90,8 +90,8 @@
 
                                     <label>
                                         <!-- select size -->
-                                        <select name="size_id" id="size_id" class="form-control" style="width: 300px;"
-                                            onchange="getSize()">
+                                        <select name="size" id="size" class="form-control" style="width: 300px;"
+                                            onchange="getColorBySize()">
 
                                             <option selected disabled> Please Choose size </option>
 
@@ -120,21 +120,7 @@
 
                                     <label>
                                         <select name="color" id="color" class="form-control" style="width: 300px;"
-                                            onchange="getColor()">
-
-                                            <option selected disabled> Please Choose color </option>
-
-                                            {% for color_variation in color_variations %}
-
-                                            <option value="{{ color_variation.color__id }}">
-                                                {{ color_variation.color__name }}
-                                            </option>
-
-                                            {% empty %}
-
-                                            <option>No Color</option>
-
-                                            {% endfor %}
+                                            onchange="getPrice()">
 
                                         </select>
                                     </label>
@@ -144,8 +130,9 @@
                         </div> <!-- row.// -->
 
                         <hr>
-                        <a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Add to
-                                cart</span> <i class="fas fa-shopping-cart"></i> </a>
+                        <a id='cart_botton' href="#" class="btn btn-primary disabled"> 
+                            <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i> 
+                        </a>
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->
             </div> <!-- row.// -->
@@ -192,13 +179,14 @@
 
 <!-- JS function to get the selected size value -->
 <script>
-    function getSize() {
-        var size_id = document.getElementById("size_id").value;
-        // send as id ur /url?size_id=1 via ajax
+    function getColorBySize() {
+        var size = document.getElementById("size").value;
+        // send as id ur /url?size=1 via ajax
+        var productDetailId = {{ product.id }} // get the product id from the url
+        
+        // create ajax object
         ajaxClint = new XMLHttpRequest();
-        var productDetailId = {{ product_id }} // get the product id from the url
-
-        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size_id, true);
+        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size, true);
         ajaxClint.send();
 
         ajaxClint.onreadystatechange = function () {
@@ -207,6 +195,12 @@
                 let color_select = document.getElementById("color");
                 let product_variations = JSON.parse(this.responseText);
                 color_select.innerHTML = "";
+                //default option for color
+                let default_option = document.createElement("option");
+                default_option.disabled = true;
+                default_option.selected = true;
+                default_option.text = "Please Choose color";
+                color_select.appendChild(default_option);
                 product_variations.forEach(function (product_variation) {
                     let option = document.createElement("option");
                     option.value = product_variation.color__id;
@@ -219,6 +213,46 @@
         }
 
     }
+
+    // get the price of the product by size and color via ajax
+    function getPrice() {
+        var size = document.getElementById("size").value;
+        var color_id = document.getElementById("color").value;
+        var productDetailId = {{ product.id }} // get the product id from the url
+
+        // create ajax object
+        ajaxClint = new XMLHttpRequest();
+        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size + "&color_id=" + color_id, true);
+        ajaxClint.send();
+
+        ajaxClint.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // here we get the response from the server and set price
+                let price = document.getElementById("price");
+                console.log(JSON.parse(this.responseText));
+                //get only product_variant_price from response
+                price.innerHTML = JSON.parse(this.responseText).product_variant_price + "$";
+                //enable add to cart button
+                //check JSON.parse(this.responseText).product_variant_stock is greater than 0
+                var stock = JSON.parse(this.responseText).product_variant_stock;
+                if (stock > 0) {
+                    document.getElementById("cart_botton").classList.remove("disabled");
+                    document.getElementById("cart_botton").href = `/cart/add/${productDetailId}/?size_id=${size}&color_id=${color_id}`;
+                    document.getElementById("cart_botton").innerHTML = "Add to cart";
+                } else {
+                    //add text stock is empty
+                    document.getElementById("cart_botton").classList.add("disabled");
+                    document.getElementById("cart_botton").href = "#";
+                    document.getElementById("cart_botton").innerHTML = "Stock is empty";
+                }
+
+
+            }
+        }
+
+    }
+
+    
 </script>
 
 {% endblock content %}
