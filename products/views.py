@@ -15,6 +15,10 @@ def product_list(request):
     category_id = request.GET.get("category_id", "")  # Kategoriya ID'si
     size_id = request.GET.get("size_id", "")  # O'lcham ID'si
 
+    # Filter prices
+    min_price = request.GET.get("min_price", "")
+    max_price = request.GET.get("max_price", "")
+
     # pagination query
     page_number = request.GET.get("page", 1)
     page_size = request.GET.get("page-size", 10)
@@ -39,6 +43,14 @@ def product_list(request):
             # variations__price__range=[min, max],  # TODO Narx oraliqi filterini qushish
         ).distinct()  # here variations is the related name of ProductVariation model
 
+    if min_price and max_price:
+        min_price = int(min_price)
+        max_price = int(max_price)
+        if min_price <= max_price:
+            products = products.filter(
+                variations__price__range=[min_price, max_price]
+            )
+
     # Variatsiyalar
     product_variations = ProductVariation.objects.filter(is_active=True)
     size_variations = product_variations.values("size__id", "size__name").distinct()
@@ -52,6 +64,7 @@ def product_list(request):
         "search": search,  # Qidiruv qiymati
         "category_id": category_id,  # Kategoriya qiymati
         "size_variations": size_variations,  # O'lcham variatsiyalari
+        "products": products,
         "page_size": page_size,
     }
 

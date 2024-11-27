@@ -42,7 +42,7 @@
                         </button>
                         <div class="dropdown-menu">
                             {% for category in categories %}
-                            <a class="dropdown-item" href="{% url 'store' %}?category_id={{category.id}}">
+                            <a class="dropdown-item" href="{% url 'store' %}?search={{ search }}&category_id={{category.id}}&size_id={{ size_variation.size__id }}&min_price={{ min_price }}&max_price={{ max_price }}">
                                 {{category.name}}
                             </a>
                             {% empty %}
@@ -59,11 +59,17 @@
                     <form action="{% url 'store' %}" method="get" class="search">
                         <div class="input-group w-100">
 
+                            <input name="search" value="{{search}}" type="text" class="form-control" style="width:60%;"
+                                placeholder="Search" id="search">
+
+
                             <input name="category_id" value="{{category_id}}" type="hidden" class="form-control"
                                 style="width:20%;" placeholder="Category" id="category_id">
 
-                            <input name="search" value="{{search}}" type="text" class="form-control" style="width:60%;"
-                                placeholder="Search" id="search">
+
+                            <input name="size_id" value="{{size_id}}" type="hidden" class="form-control"
+                                style="width:20%;" placeholder="Size" id="size_id">
+
 
                             <div class="input-group-append">
 
