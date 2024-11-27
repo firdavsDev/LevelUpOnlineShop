@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from decouple import config
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -11,10 +12,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ufj15+t_ju&1x5(10ro(*g=u_8$qyp=c24uh9$f4w2z$0lx9kn"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
+
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -22,19 +24,26 @@ ALLOWED_HOSTS = [
 
 
 # Application definition
-
-INSTALLED_APPS = [
+BUILTIN_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+
+THIRY_APPS = []  # pip install ... (only django app)
+
+CUSTOM_APPS = [
     # Custom apps
     "common",
     "accounts",
     "products",
+    "cart",
 ]
+
+INSTALLED_APPS = [*BUILTIN_APPS, *THIRY_APPS, *CUSTOM_APPS]
 
 # Custom user model
 AUTH_USER_MODEL = "accounts.CustomUser"  # Default Django.User

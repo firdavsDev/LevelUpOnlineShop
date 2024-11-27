@@ -2,13 +2,17 @@
 
 * product app:
     [x] product list
-    [] pagination
-    [] product variation
+    [x] pagination
+    [x] product variation
     [x] product detail
     [x] search
     [x] product category
-    [x] product filter 20%
+    [x] product filter
 * cart app (add to cart, remove from cart, update cart, cart detail ...)
+    [] Cart Model (database)
+    [] Add/Remove card
+    [] plus/minus + -
+    [] Price conculate
 * order app (order list, order detail, order create ...)
 * comment app (comment list, comment create, comment delete, rating ...)
 * common app (contact us, about us, home page, footer, header, navbar, banner ...)
