@@ -33,16 +33,19 @@
 						<div class="filter-content collapse show" id="collapse_1">
 							<div class="card-body">
 								<ul class="list-menu">
+
 									{% for category in categories %}
 									<li>
-										<a href="?search={{ search }}&category_id={{category.id}}&size_id={{ size_variation.size__id }}&min_price={{ min_price }}&max_price={{ max_price }}">
+										<a href="?category_id={{category.id}}&search={{search}}&size_id={{size_id}}">
 											{{ category.name }}
 										</a>
 									</li>
 									{% empty %}
 									<li>No categories found</li>
 									{% endfor %}
+
 								</ul>
+
 							</div> <!-- card-body.// -->
 						</div>
 					</article> <!-- filter-group  .// -->
@@ -59,8 +62,8 @@
 								{% for size_variation in size_variations %}
 
 									<label class="checkbox-btn">
-										<a href="?search={{ search }}&category_id={{category.id}}&size_id={{ size_variation.size__id }}&min_price={{ min_price }}&max_price={{ max_price }}">
-											<span class="btn btn-light"> {{ size_variation.size__name }} </span>
+										<a href="?size_id={{ size_variation.size__id }}&search={{ search }}&category_id={{category_id}}">
+											<span class="btn btn-light {% if size_variation.size__id == size_id %}active{% endif %}"> {{ size_variation.size__name }} </span>
 										</a>
 									</label>
 
@@ -80,7 +83,10 @@
 						<div class="filter-content collapse show" id="collapse_3">
 							<div class="card-body">
 
-								<form action="?search={{ search }}&category_id={{category.id}}&size_id={{ size_variation.size__id }}&min_price={{ min_price }}&max_price={{ max_price }}" method="get">
+								<form action="." method="get">
+									<input type="hidden" name="category_id" value="{{ category_id }}">
+									<input type="hidden" name="size_id" value="{{ size_id }}">
+									<input type="hidden" name="search" value="{{ search }}">
 								
 									<div class="form-row">
 										<div class="form-group col-md-6">
@@ -148,7 +154,7 @@
 							{% endif %}
 							<figcaption class="info-wrap">
 								<a href="{% url 'product_detail' product.id %}" class="title">{{ product.name }}</a>
-								<div class="price mt-1">${{ product.price }}</div>
+								<div class="price mt-1">${{ product.variations.first.price }}</div>
 							</figcaption>
 						</div>
 					</div>
