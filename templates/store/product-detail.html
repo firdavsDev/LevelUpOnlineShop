@@ -79,7 +79,8 @@
                             <var id="price" class="price h4">Narxi: </var>
                         </div>
 
-                        <p>{{ product.description }}</p>
+                        <p>*{{ product.description }}</p>
+                        <p id="stock"></p>
 
                         <hr>
                         <div class="row">
@@ -239,6 +240,7 @@
                     document.getElementById("cart_botton").classList.remove("disabled");
                     document.getElementById("cart_botton").href = `/cart/add/${productDetailId}/?size_id=${size}&color_id=${color_id}`;
                     document.getElementById("cart_botton").innerHTML = "Add to cart";
+                    document.getElementById("stock").innerHTML = `*Bizda bu maxsulotdan ${ stock } dona qolgan`;
                 } else {
                     //add text stock is empty
                     document.getElementById("cart_botton").classList.add("disabled");

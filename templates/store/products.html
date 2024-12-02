@@ -88,40 +88,40 @@
 									<input type="hidden" name="size_id" value="{{ size_id }}">
 									<input type="hidden" name="search" value="{{ search }}">
 								
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label>Min</label>
-										<!-- <input class="form-control" placeholder="$0" type="number"> -->
-										<select class="mr-2 form-control" name="min_price">
-											<option value="0">$0</option>
-											<option value="50">$50</option>
-											<option value="100">$100</option>
-											<option value="150">$150</option>
-											<option value="200">$200</option>
-											<option value="500">$500</option>
-											<option value="1000">$1000</option>
-										</select>
-									</div>
-									<div class="form-group text-right col-md-6">
-										<label>Max</label>
-										<select class="mr-2 form-control" name="max_price">
-											<option value="50">$50</option>
-											<option value="100">$100</option>
-											<option value="150">$150</option>
-											<option value="200">$200</option>
-											<option value="500">$500</option>
-											<option value="1000">$1000</option>
-											<option value="2000">$2000+</option>
-										</select>
-									</div>
-								</div> <!-- form-row.// -->
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label>Min</label>
+											<!-- <input class="form-control" placeholder="$0" type="number"> -->
+											<select class="mr-2 form-control" name="min_price">
+												<option value="0">$0</option>
+												<option value="50">$50</option>
+												<option value="100">$100</option>
+												<option value="150">$150</option>
+												<option value="200">$200</option>
+												<option value="500">$500</option>
+												<option value="1000">$1000</option>
+											</select>
+										</div>
+										<div class="form-group text-right col-md-6">
+											<label>Max</label>
+											<select class="mr-2 form-control" name="max_price">
+												<option value="50">$50</option>
+												<option value="100">$100</option>
+												<option value="150">$150</option>
+												<option value="200">$200</option>
+												<option value="500">$500</option>
+												<option value="1000">$1000</option>
+												<option value="2000">$2000+</option>
+											</select>
+										</div>
+									</div> <!-- form-row.// -->
 
-								<button class="btn btn-block btn-primary">Apply</button>
+									<button class="btn btn-block btn-primary">Apply</button>
 
-							</form>
-								<button class="btn btn-block btn-light" onclick="clearFilters()">
-									Reset
-								</button>
+								</form>
+									<button class="btn btn-block btn-light" onclick="clearFilters()">
+										Reset
+									</button>
 								
 							</div><!-- card-body.// -->
 						</div>
@@ -145,7 +145,7 @@
 						<div class="card card-product-grid">
 							{% if product.image %}
 							<a href="{% url 'product_detail' product.id %}" class="img-wrap"> 
-								<img src="{{ product.image.url }}"> 
+								<img src=	`"{{ product.image.url }}"> 
 							</a>
 							{% else %}
 							<a href="{% url 'product_detail' product.id %}" class="img-wrap"> 
