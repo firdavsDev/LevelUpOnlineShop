@@ -9,7 +9,8 @@
     [x] product category
     [x] product filter
 * cart app (add to cart, remove from cart, update cart, cart detail ...)
-    [] Cart Model (database)
+    [x] Cart Model (database)
+    [] .env
     [] Add/Remove card
     [] plus/minus + -
     [] Price conculate

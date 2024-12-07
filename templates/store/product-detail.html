@@ -130,9 +130,18 @@
                         </div> <!-- row.// -->
 
                         <hr>
-                        <a id='cart_botton' href="#" class="btn btn-primary disabled"> 
-                            <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i> 
-                        </a>
+
+                        <form action="{% url 'add_cart' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="hidden" name="size_id" id="size_id" value="">
+                            <input type="hidden" name="color_id" id="color_id" value="">
+                            <button id='cart_botton' type="submit" class="btn btn-primary disabled">
+                                Add to cart
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </form>
+
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->
             </div> <!-- row.// -->
@@ -182,8 +191,8 @@
     function getColorBySize() {
         var size = document.getElementById("size").value;
         // send as id ur /url?size=1 via ajax
-        var productDetailId = {{ product.id }} // get the product id from the url
-        
+        var productDetailId = {{ product.id }} ;
+
         // create ajax object
         ajaxClint = new XMLHttpRequest();
         ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size, true);
@@ -220,39 +229,39 @@
         var color_id = document.getElementById("color").value;
         var productDetailId = {{ product.id }} // get the product id from the url
 
-        // create ajax object
-        ajaxClint = new XMLHttpRequest();
-        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size + "&color_id=" + color_id, true);
-        ajaxClint.send();
+    // create ajax object
+    ajaxClint = new XMLHttpRequest();
+    ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size + "&color_id=" + color_id, true);
+    ajaxClint.send();
 
-        ajaxClint.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // here we get the response from the server and set price
-                let price = document.getElementById("price");
-                console.log(JSON.parse(this.responseText));
-                //get only product_variant_price from response
-                price.innerHTML = JSON.parse(this.responseText).product_variant_price + "$";
-                //enable add to cart button
-                //check JSON.parse(this.responseText).product_variant_stock is greater than 0
-                var stock = JSON.parse(this.responseText).product_variant_stock;
-                if (stock > 0) {
-                    document.getElementById("cart_botton").classList.remove("disabled");
-                    document.getElementById("cart_botton").href = `/cart/add/${productDetailId}/?size_id=${size}&color_id=${color_id}`;
-                    document.getElementById("cart_botton").innerHTML = "Add to cart";
-                } else {
-                    //add text stock is empty
-                    document.getElementById("cart_botton").classList.add("disabled");
-                    document.getElementById("cart_botton").href = "#";
-                    document.getElementById("cart_botton").innerHTML = "Stock is empty";
-                }
-
-
+    ajaxClint.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // here we get the response from the server and set price
+            let price = document.getElementById("price");
+            //get only product_variant_price from response
+            price.innerHTML = JSON.parse(this.responseText).product_variant_price + "$";
+            //enable add to cart button
+            //check JSON.parse(this.responseText).product_variant_stock is greater than 0
+            var stock = JSON.parse(this.responseText).product_variant_stock;
+            if (stock > 0) {
+                document.getElementById("cart_botton").classList.remove("disabled");
+                // get color_id and size_id hidden input values
+                document.getElementById("size_id").value = size;
+                document.getElementById("color_id").value = color_id;
+                // document.getElementById("cart_botton").innerHTML = "Add to cart";
+            } else {
+                //add text stock is empty
+                document.getElementById("cart_botton").classList.add("disabled");
+                document.getElementById("cart_botton").innerHTML = "Stock is empty";
             }
+
+
         }
+    }
 
     }
 
-    
+
 </script>
 
 {% endblock content %}

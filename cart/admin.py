@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-# TODO Register your models here.
+# TODO configure admin panel
 from .models import Cart, CartItems
 
 admin.site.register(Cart)
