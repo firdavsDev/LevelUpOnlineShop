@@ -44,9 +44,16 @@
                                     <div class="col">
                                         <div class="input-group input-spinner">
                                             <div class="input-group-prepend">
-                                                <button class="btn btn-light" type="button" id="button-plus">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
+                                                <form action="{% url 'remove_cart' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product_id" value="{{  cart_item.product_variant.product.id }}">
+                                                    <input type="hidden" name="size_id" id="size_id" value="{{ cart_item.product_variant.size.id }}">
+                                                    <input type="hidden" name="color_id" id="color_id" value="{{ cart_item.product_variant.color.id }}">
+                                                    
+                                                    <button class="btn btn-light" type="submit" id="button-plus">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                             <input type="text" class="form-control" value="{{cart_item.quantity}}">
                                             <div class="input-group-append">
@@ -58,6 +65,7 @@
 
                                                     <button class="btn btn-light" type="submit" id="button-plus">
                                                         <i class="fa fa-plus"></i>
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div> <!-- input-group.// -->
@@ -72,9 +80,16 @@
                                         <small class="text-muted"> ${{ cart_item.product_variant.price }} each </small>
                                     </div> <!-- price-wrap .// -->
                                 </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger"> Remove</a>
-                                </td>
+                                <form action="{% url 'delete_cart' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{  cart_item.product_variant.product.id }}">
+                                    <input type="hidden" name="size_id" id="size_id" value="{{ cart_item.product_variant.size.id }}">
+                                    <input type="hidden" name="color_id" id="color_id" value="{{ cart_item.product_variant.color.id }}">
+                                    <td class="text-right">
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </td>
+
+                                </form>
                             </tr>
                             {% endfor %}
 

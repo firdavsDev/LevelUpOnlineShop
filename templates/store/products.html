@@ -152,10 +152,15 @@
 								<img alt="product-img" src="#"> 
 							</a>
 							{% endif %}
-							<figcaption class="info-wrap">
-								<a href="{% url 'product_detail' product.id %}" class="title">{{ product.name }}</a>
-								<div class="price mt-1">${{ product.variations.first.price }}</div>
-							</figcaption>
+							{% if product.variations.first.size %}
+								<figcaption class="info-wrap">
+									<a href="{% url 'product_detail' product.id %}" class="title">{{ product.name }}</a>
+									<div class="price mt-1">${{ product.variations.first.price }}</div>
+								</figcaption>
+							{% else %}
+								<label> Afsuski maxsulot qolmadi!</label>
+								<p> Soon... </p>
+							{% endif %}
 						</div>
 					</div>
 					{% empty %}

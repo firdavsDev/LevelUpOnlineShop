@@ -6,6 +6,8 @@ from products.models import ProductVariation
 
 from .models import Cart, CartItems
 
+from django.contrib import messages
+
 
 def cart(request):
     user_cart, created = Cart.objects.get_or_create(user=request.user)
@@ -29,7 +31,6 @@ def cart(request):
 
 
 def add_cart(request):
-    # TODO validatero for product stock is enough
     user_cart, created = Cart.objects.get_or_create(user=request.user)
     if request.method == "POST":
         size_id = request.POST.get("size_id")
@@ -48,4 +49,40 @@ def add_cart(request):
     return redirect("cart_page")
 
 
-# TODO Remove item from cart
+def remove_cart(request):
+    user_cart = Cart.objects.get(user=request.user)
+    if request.method == "POST":
+        size_id = request.POST.get("size_id")
+        product_id = request.POST.get("product_id")
+        color_id = request.POST.get("color_id")
+        product_variant = ProductVariation.objects.get(
+            product_id=product_id, size_id=size_id, color_id=color_id
+        )
+        cart_item = CartItems.objects.get(
+            cart=user_cart, product_variant=product_variant
+        )
+        cart_item.quantity -= 1
+        if cart_item.quantity == 0:
+            cart_item.delete()
+        else:
+            cart_item.save()
+    return redirect("cart_page")
+
+
+def delete_cart(request):
+    user_cart = Cart.objects.get(user=request.user)
+    if request.method == "POST":
+        size_id = request.POST.get("size_id")
+        product_id = request.POST.get("product_id")
+        color_id = request.POST.get("color_id")
+        product_variant = ProductVariation.objects.get(
+            product_id=product_id, size_id=size_id, color_id=color_id
+        )
+        cart_item = CartItems.objects.get(
+            cart=user_cart, product_variant=product_variant
+        )
+        print("cart_item")
+        cart_item.delete()
+
+    return redirect("cart_page")
+
