@@ -62,7 +62,7 @@ class Product(BaseModel):
     )  # unlimited length
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
-    season = models.ManyToManyField(Season, related_name="seasons", null=True)
+    season = models.ManyToManyField(Season, related_name="seasons")
 
     def __str__(self):
         return f"{self.name} - {self.category.name}"

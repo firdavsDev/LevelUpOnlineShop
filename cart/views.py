@@ -30,7 +30,7 @@ def cart(request):
     return render(request, "cart/cart.html", context)
 
 
-def add_cart(request):
+def add_cart_item(request):
     user_cart, created = Cart.objects.get_or_create(user=request.user)
     if request.method == "POST":
         size_id = request.POST.get("size_id")
@@ -42,24 +42,22 @@ def add_cart(request):
         cart_item, created = CartItems.objects.get_or_create(
             cart=user_cart, product_variant=product_variant
         )
-        if not created:
-            cart_item.quantity += 1
-            cart_item.save()
+        if cart_item.product_variant.stock != 0:
+            if not created:
+                cart_item.quantity += 1
+                cart_item.save()
+        else:
+            messages.error(request, "Bu mahsulot bazamizda qolmadi")
 
     return redirect("cart_page")
 
 
-def remove_cart(request):
+def remove_cart_item(request):
     user_cart = Cart.objects.get(user=request.user)
     if request.method == "POST":
-        size_id = request.POST.get("size_id")
-        product_id = request.POST.get("product_id")
-        color_id = request.POST.get("color_id")
-        product_variant = ProductVariation.objects.get(
-            product_id=product_id, size_id=size_id, color_id=color_id
-        )
+        product_variant_id = request.POST.get("product_variant_id")
         cart_item = CartItems.objects.get(
-            cart=user_cart, product_variant=product_variant
+            cart=user_cart, product_variant__id=product_variant_id
         )
         cart_item.quantity -= 1
         if cart_item.quantity == 0:
@@ -69,17 +67,12 @@ def remove_cart(request):
     return redirect("cart_page")
 
 
-def delete_cart(request):
+def delete_cart_item(request):
     user_cart = Cart.objects.get(user=request.user)
     if request.method == "POST":
-        size_id = request.POST.get("size_id")
-        product_id = request.POST.get("product_id")
-        color_id = request.POST.get("color_id")
-        product_variant = ProductVariation.objects.get(
-            product_id=product_id, size_id=size_id, color_id=color_id
-        )
+        product_variant_id = request.POST.get("product_variant_id")
         cart_item = CartItems.objects.get(
-            cart=user_cart, product_variant=product_variant
+            cart=user_cart, product_variant__id=product_variant_id
         )
         print("cart_item")
         cart_item.delete()

@@ -46,9 +46,7 @@
                                             <div class="input-group-prepend">
                                                 <form action="{% url 'remove_cart' %}" method="post">
                                                     {% csrf_token %}
-                                                    <input type="hidden" name="product_id" value="{{  cart_item.product_variant.product.id }}">
-                                                    <input type="hidden" name="size_id" id="size_id" value="{{ cart_item.product_variant.size.id }}">
-                                                    <input type="hidden" name="color_id" id="color_id" value="{{ cart_item.product_variant.color.id }}">
+                                                    <input type="hidden" name="product_variant_id" value="{{  cart_item.product_variant.id }}">
                                                     
                                                     <button class="btn btn-light" type="submit" id="button-plus">
                                                         <i class="fa fa-minus"></i>
@@ -82,9 +80,7 @@
                                 </td>
                                 <form action="{% url 'delete_cart' %}" method="post">
                                     {% csrf_token %}
-                                    <input type="hidden" name="product_id" value="{{  cart_item.product_variant.product.id }}">
-                                    <input type="hidden" name="size_id" id="size_id" value="{{ cart_item.product_variant.size.id }}">
-                                    <input type="hidden" name="color_id" id="color_id" value="{{ cart_item.product_variant.color.id }}">
+                                    <input type="hidden" name="product_variant_id" value="{{  cart_item.product_variant.id }}">
                                     <td class="text-right">
                                         <button type="submit" class="btn btn-danger">Remove</button>
                                     </td>
