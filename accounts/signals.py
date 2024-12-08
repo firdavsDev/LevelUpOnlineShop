@@ -12,6 +12,3 @@ def create_user_profile(sender, instance, created, **kwargs):
         Cart.objects.create(user=instance)
         # Profile.objects.create(user=instance)
         print("Cart created!")
-
-
-# TODO add siganls to calcuator project

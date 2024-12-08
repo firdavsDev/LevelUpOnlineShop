@@ -39,17 +39,22 @@
                     <a href="{% url 'product_detail' product.id %}" class="img-wrap"> <img alt="product-img" src="#">
                     </a>
                     {% endif %}
-                    <figcaption class="info-wrap">
-                        <a href="{% url 'product_detail' product.id %}" class="title">
-                            {{ product.name }}
-                        </a>
-                        
-                        <span class="tag"> {{ product.variations.first.size }} </span>
-                        <span class="tag"> {{ product.variations.first.color }} </span>
+                    {% if product.variations.first.size %}
+                        <figcaption class="info-wrap">
+                            <a href="{% url 'product_detail' product.id %}" class="title">
+                                {{ product.name }}
+                            </a>
+                            
+                            <span class="tag"> {{ product.variations.first.size }} </span>
+                            <span class="tag"> {{ product.variations.first.color }} </span>
 
-                        <div class="price mt-1">${{product.variations.first.price}}</div> <!-- price-wrap.// -->
+                            <div class="price mt-1">${{product.variations.first.price}}</div> <!-- price-wrap.// -->
 
-                    </figcaption>
+                        </figcaption>
+                    {% else %}
+                        <label> Afsuski maxsulot qolmadi!</label>
+                        <p> Soon... </p>
+                    {% endif %}
                 </div>
             </div> <!-- col.// -->
 
