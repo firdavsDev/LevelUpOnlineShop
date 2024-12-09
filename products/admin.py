@@ -1,13 +1,12 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Category, Color, Product, ProductIMG, ProductVariation, Size
+from .models import Category, Color, Product, ProductIMG, ProductVariation, Size, Brand, Season
 
 # Simple way
 # admin.site.register(Category)
 # admin.site.register(Product)
 
-# TODO: FK ni qidirish imkonini berish
 
 
 # More beautiful way
@@ -19,6 +18,26 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category, CategoryAdmin)
+
+
+class BrandAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    list_filter = ["is_active"]
+    search_fields = ["name"]
+    date_hierarchy = "created_at"
+
+
+admin.site.register(Brand, BrandAdmin)
+
+
+class SeasonAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    list_filter = ["is_active"]
+    search_fields = ["name"]
+    date_hierarchy = "created_at"
+
+
+admin.site.register(Season, SeasonAdmin)
 
 
 # imges tuburline
@@ -33,6 +52,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "category",
+        "brand",
         "is_active",
         "created_at",
         "updated_at",
@@ -42,6 +62,11 @@ class ProductAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     list_editable = ["is_active"]
     inlines = [ProductIMGInline]
+    autocomplete_fields = [
+        "category",
+        "brand",
+        "season",
+    ] 
 
 
 admin.site.register(Product, ProductAdmin)
@@ -54,6 +79,9 @@ class ProductIMGAdmin(admin.ModelAdmin):
         "product__name"
     ]  # __ bu 2 ta underscore bilan ishlatiladi. yani product__name bu product modeldagi name fieldini izlaydi
     date_hierarchy = "created_at"
+    autocomplete_fields = [
+        "product",
+    ] 
 
 
 admin.site.register(ProductIMG, ProductIMGAdmin)
@@ -87,7 +115,7 @@ class ProductVariationAdmin(admin.ModelAdmin):
         "is_active",
         "created_at",
     ]
-    search_fields = ["product"]
+    search_fields = ["product__name"]
     list_filter = ["product", "color", "size", "is_active"]
     date_hierarchy = "created_at"
     autocomplete_fields = [

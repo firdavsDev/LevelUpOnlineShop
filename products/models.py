@@ -28,6 +28,28 @@ class Category(BaseModel):
         verbose_name = "Kategoriya"
 
 
+class Brand(BaseModel):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Brendlar"
+        verbose_name = "Brend"
+
+
+class Season(BaseModel):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Mavsumlar"
+        verbose_name = "Mavsum"
+
+
 class Product(BaseModel):
     name = models.CharField(
         max_length=255, verbose_name="Maxsulot nomi"
@@ -39,9 +61,8 @@ class Product(BaseModel):
         help_text="Maxsulotni maqtab yoz"
     )  # unlimited length
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    # TODO add brand and season
-    # brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    # season = models.ManyToManyField(Season, related_name="seasons")
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
+    season = models.ManyToManyField(Season, related_name="seasons")
 
     def __str__(self):
         return f"{self.name} - {self.category.name}"
