@@ -1,16 +1,21 @@
 from decimal import Decimal
 
+from django.contrib import messages
 from django.shortcuts import redirect, render
 
 from products.models import ProductVariation
 
 from .models import Cart, CartItems
-
-from django.contrib import messages
+from .utils import get_session_key
 
 
 def cart(request):
-    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    # TODO DRY - Don't Repeat Yourself (context processor move to common app)
+    if request.user.is_authenticated:
+        user_cart = Cart.objects.get(user=request.user)
+    else:
+        session_key = get_session_key(request)
+        user_cart, _ = Cart.objects.get_or_create(session_key=session_key)
 
     cart_items = CartItems.objects.filter(cart=user_cart)
     total_price = 0
@@ -31,8 +36,15 @@ def cart(request):
 
 
 def add_cart_item(request):
-    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    # get user cart or create new cart via session key
+    if request.user.is_authenticated:
+        user_cart = Cart.objects.get(user=request.user)
+    else:
+        session_key = get_session_key(request)
+        user_cart, _ = Cart.objects.get_or_create(session_key=session_key)
+
     if request.method == "POST":
+        print("POST")
         size_id = request.POST.get("size_id")
         product_id = request.POST.get("product_id")
         color_id = request.POST.get("color_id")
@@ -42,6 +54,7 @@ def add_cart_item(request):
         cart_item, created = CartItems.objects.get_or_create(
             cart=user_cart, product_variant=product_variant
         )
+        print("created", created)
         if cart_item.product_variant.stock != 0:
             if not created:
                 cart_item.quantity += 1
@@ -74,8 +87,6 @@ def delete_cart_item(request):
         cart_item = CartItems.objects.get(
             cart=user_cart, product_variant__id=product_variant_id
         )
-        print("cart_item")
         cart_item.delete()
 
     return redirect("cart_page")
-

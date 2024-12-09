@@ -142,3 +142,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MESSAGE_TAGS = {
     messages.ERROR: "danger",  # Bootstrap class
 }
+# SESSIOn name
+CUSTOM_SESSION_KEY = "custom_session_key"
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 week
+SESSION_ENGINE = "django.contrib.sessions.backends.db"

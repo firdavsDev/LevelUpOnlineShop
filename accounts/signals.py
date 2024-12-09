@@ -9,6 +9,5 @@ from .models import CustomUser
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Cart.objects.create(user=instance)
-        # Profile.objects.create(user=instance)
-        print("Cart created!")
+        Cart.objects.get_or_create(user=instance)
+        print("User created")

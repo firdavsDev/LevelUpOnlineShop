@@ -6,14 +6,17 @@ from products.models import ProductVariation
 
 
 class Cart(BaseModel):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, related_name="cart", null=True
+    )
+    session_key = models.CharField(max_length=255, null=True, blank=True, unique=True)
 
     class Meta:
         verbose_name = "Cart"
         verbose_name_plural = "Carts"
 
     def __str__(self):
-        return f"{self.user.username}'s cart"
+        return f"{self.user}'s ({self.session_key}) cart"
 
 
 class CartItems(BaseModel):
@@ -36,4 +39,6 @@ class CartItems(BaseModel):
         unique_together = ["product_variant", "cart"]
 
     def __str__(self):
-        return f"{self.cart.user.username} - {self.product_variant.product.name} - {self.quantity}"
+        return (
+            f"{self.cart.user} - {self.product_variant.product.name} - {self.quantity}"
+        )
