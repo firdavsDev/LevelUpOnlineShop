@@ -6,8 +6,8 @@ from django.shortcuts import redirect, render
 from cart.models import Cart
 from cart.utils import get_session_key
 
-from .forms import SimpleLoginForm
-from .models import CustomUser
+from ..forms import SimpleLoginForm
+from ..models import CustomUser
 
 
 def login_form(request):
@@ -98,15 +98,14 @@ def register(request):
                 messages.error(request, "Email is already taken")
                 return redirect("register")
 
-            user_obj = CustomUser.objects.create(
+            user_obj = CustomUser.objects.create_user(
+                email=user_email,
+                password=password1,
                 username=user_email,
                 first_name=f_name,
                 last_name=l_name,
-                email=user_email,
-                password=password1,
             )
-            # TODO filter cart via session key and set user to cart
-            
+            #
             session_key = get_session_key(request)
             cart_obj, _ = Cart.objects.get_or_create(session_key=session_key)
             cart_obj.user = user_obj

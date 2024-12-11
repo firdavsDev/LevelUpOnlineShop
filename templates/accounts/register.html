@@ -38,15 +38,22 @@
 
         <div class="form-row">
 
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
             <label>Create password</label>
             <input name="password1" class="form-control" type="password">
           </div> <!-- form-group end.// -->
 
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
             <label>Repeat password</label>
             <input name="password2" class="form-control" type="password">
+            <!-- show password icon -->
+
           </div> <!-- form-group end.// -->
+          <div class="form-group col-md-2">
+            <button type="button" class="btn btn-light" onclick="showPassword()">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
 
         </div>
 
@@ -66,5 +73,19 @@
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
+
+<script>
+  function showPassword() {
+    var x = document.getElementsByName("password1")[0];
+    var y = document.getElementsByName("password2")[0];
+    if (x.type === "password") {
+      x.type = "text";
+      y.type = "text";
+    } else {
+      x.type = "password";
+      y.type = "password";
+    }
+  }
+</script>
 
 {% endblock content %}

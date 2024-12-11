@@ -46,8 +46,9 @@
                                             <div class="input-group-prepend">
                                                 <form action="{% url 'remove_cart' %}" method="post">
                                                     {% csrf_token %}
-                                                    <input type="hidden" name="product_variant_id" value="{{  cart_item.product_variant.id }}">
-                                                    
+                                                    <input type="hidden" name="product_variant_id"
+                                                        value="{{  cart_item.product_variant.id }}">
+
                                                     <button class="btn btn-light" type="submit" id="button-plus">
                                                         <i class="fa fa-minus"></i>
                                                     </button>
@@ -57,9 +58,12 @@
                                             <div class="input-group-append">
                                                 <form action="{% url 'add_cart' %}" method="post">
                                                     {% csrf_token %}
-                                                    <input type="hidden" name="product_id" value="{{  cart_item.product_variant.product.id }}">
-                                                    <input type="hidden" name="size_id" id="size_id" value="{{ cart_item.product_variant.size.id }}">
-                                                    <input type="hidden" name="color_id" id="color_id" value="{{ cart_item.product_variant.color.id }}">
+                                                    <input type="hidden" name="product_id"
+                                                        value="{{  cart_item.product_variant.product.id }}">
+                                                    <input type="hidden" name="size_id" id="size_id"
+                                                        value="{{ cart_item.product_variant.size.id }}">
+                                                    <input type="hidden" name="color_id" id="color_id"
+                                                        value="{{ cart_item.product_variant.color.id }}">
 
                                                     <button class="btn btn-light" type="submit" id="button-plus">
                                                         <i class="fa fa-plus"></i>
@@ -80,7 +84,8 @@
                                 </td>
                                 <form action="{% url 'delete_cart' %}" method="post">
                                     {% csrf_token %}
-                                    <input type="hidden" name="product_variant_id" value="{{  cart_item.product_variant.id }}">
+                                    <input type="hidden" name="product_variant_id"
+                                        value="{{  cart_item.product_variant.id }}">
                                     <td class="text-right">
                                         <button type="submit" class="btn btn-danger">Remove</button>
                                     </td>
@@ -114,7 +119,9 @@
                         <p class="text-center mb-3">
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
-                        <a href="{% url 'place_order' %}" class="btn btn-primary btn-block"> Checkout </a>
+                        {% if cart_items %}
+                        <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Checkout </a>
+                        {% endif %}
                         <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->

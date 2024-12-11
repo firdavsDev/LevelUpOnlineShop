@@ -6,17 +6,18 @@ from django.shortcuts import redirect, render
 from products.models import ProductVariation
 
 from .models import Cart, CartItems
-from .utils import get_session_key, get_user_cart
+from .utils import get_user_cart
 
 
 def cart(request):
     user_cart = get_user_cart(request)
 
     cart_items = CartItems.objects.filter(cart=user_cart)
-    total_price = 0
-    for item in cart_items:
-        total_price += item.price
-
+    total_price = sum([item.price for item in cart_items])
+    # TODO v3 sql annotation & aggregate
+    # total_price_v3 = cart_items.aggregate(
+    #     total_price=Sum(F("product_variant__price") * F("quantity"))
+    # )["total_price"]
     # doanytion is 10% of total price
     donation = total_price * Decimal("0.1")
     grand_total = total_price + donation
@@ -35,10 +36,13 @@ def add_cart_item(request):
     user_cart = get_user_cart(request)
 
     if request.method == "POST":
-        print("POST")
         size_id = request.POST.get("size_id")
         product_id = request.POST.get("product_id")
         color_id = request.POST.get("color_id")
+        # check post data is valid
+        if not size_id or not product_id or not color_id:
+            messages.error(request, "Maxsulotning xususiyatlarini tanlang!")
+            return redirect("product_detail", product_id=product_id)
         product_variant = ProductVariation.objects.get(
             product_id=product_id, size_id=size_id, color_id=color_id
         )

@@ -17,42 +17,30 @@
                     <div class="card-body">
                         <h4 class="card-title mb-4">Review cart</h4>
                         <div class="row">
+                            {% for cart_item in cart_items %}
                             <div class="col-md-6">
                                 <figure class="itemside  mb-4">
-                                    <div class="aside"><img src="{% static './images/items/1.jpg' %}" class="border img-sm"></div>
+                                    <div class="aside"><img src="{{ cart_item.product_variant.product.image.url }}"
+                                            class="border img-sm"></div>
                                     <figcaption class="info">
-                                        <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
-                                        <span class="text-muted">2x = $560 </span>
+                                        <p>
+                                            {{ cart_item.product_variant.product.name }} -
+                                            {{ cart_item.product_variant.color.name }} -
+                                            {{ cart_item.product_variant.size.name }}
+                                        </p>
+                                        <span class="text-muted">
+                                            {{ cart_item.quantity }} x ${{ cart_item.product_variant.price }} =
+                                            ${{ cart_item.price }}
+                                        </span>
                                     </figcaption>
                                 </figure>
                             </div> <!-- col.// -->
-                            <div class="col-md-6">
-                                <figure class="itemside  mb-4">
-                                    <div class="aside"><img src="{% static './images/items/2.jpg' %}" class="border img-sm"></div>
-                                    <figcaption class="info">
-                                        <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
-                                        <span class="text-muted">2x = $560 </span>
-                                    </figcaption>
-                                </figure>
-                            </div> <!-- col.// -->
-                            <div class="col-md-6">
-                                <figure class="itemside mb-4">
-                                    <div class="aside"><img src="{% static './images/items/3.jpg' %}" class="border img-sm"></div>
-                                    <figcaption class="info">
-                                        <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
-                                        <span class="text-muted">2x = $560 </span>
-                                    </figcaption>
-                                </figure>
-                            </div> <!-- col.// -->
-                            <div class="col-md-6">
-                                <figure class="itemside  mb-4">
-                                    <div class="aside"><img src="{% static './images/items/4.jpg' %}" class="border img-sm"></div>
-                                    <figcaption class="info">
-                                        <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
-                                        <span class="text-muted">2x = $560 </span>
-                                    </figcaption>
-                                </figure>
-                            </div> <!-- col.// -->
+                            {% empty %}
+                            <div class="col-md-12">
+                                <p class="alert alert-warning">Your cart is empty</p>
+                            </div>
+                            {% endfor %}
+
                         </div> <!-- row.// -->
                     </div> <!-- card-body.// -->
                 </article> <!-- card.// -->
@@ -64,20 +52,24 @@
                         <form action="">
                             <div class="row">
                                 <div class="form-group col-sm-6">
-                                    <label>Frst name</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
+                                    <label>First name</label>
+                                    <input type="text" placeholder="Type here" class="form-control"
+                                        value="{{user_profile.first_name}}">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Last name</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
+                                    <input type="text" placeholder="Type here" class="form-control"
+                                        value="{{user_profile.last_name}}">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Phone</label>
-                                    <input type="text" value="+998" class="form-control">
+                                    <input type="text" class="form-control" placeholder="+998 "
+                                        value="{{user_profile.phone}}">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Email</label>
-                                    <input type="email" placeholder="example@gmail.com" class="form-control">
+                                    <input type="email" placeholder="example@gmail.com" class="form-control"
+                                        value="{{user_profile.email}}">
                                 </div>
                             </div> <!-- row.// -->
                         </form>
@@ -93,7 +85,7 @@
 
                             <div class="row">
                                 <div class="form-group col-sm-6">
-                                    <label>Country*</label>
+                                    <label>Region</label>
                                     <select name="" class="form-control">
                                         <option value="">India</option>
                                         <option value="">United States</option>
@@ -102,7 +94,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label>State*</label>
+                                    <label>District*</label>
                                     <input type="text" placeholder="Type here" class="form-control">
                                 </div>
                                 <div class="form-group col-sm-8">
@@ -113,16 +105,12 @@
                                     <label>Building</label>
                                     <input type="text" placeholder="" class="form-control">
                                 </div>
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-sm-6">
                                     <label>House</label>
                                     <input type="text" placeholder="Type here" class="form-control">
                                 </div>
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-sm-6">
                                     <label>Postal code</label>
-                                    <input type="text" placeholder="" class="form-control">
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    <label>Zip</label>
                                     <input type="text" placeholder="" class="form-control">
                                 </div>
                             </div> <!-- row.// -->
@@ -170,8 +158,8 @@
                                         name="">
                                     <input type="text" class="form-control mr-2" style="width: 100px"
                                         placeholder="dd/yy" name="">
-                                    <input type="number" maxlength="3" class="form-control mr-2"
-                                        style="width: 100px" placeholder="cvc" name="">
+                                    <input type="number" maxlength="3" class="form-control mr-2" style="width: 100px"
+                                        placeholder="cvc" name="">
                                     <button class="btn btn btn-success">Button</button>
                                 </form>
                             </div> <!-- card body .// -->
@@ -182,20 +170,21 @@
                 <!-- accordion end.// -->
 
             </main> <!-- col.// -->
+
             <aside class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <dl class="dlist-align">
                             <dt>Total price:</dt>
-                            <dd class="text-right">$69.97</dd>
+                            <dd class="text-right">${{grand_total}}</dd>
                         </dl>
                         <dl class="dlist-align">
-                            <dt>Tax:</dt>
-                            <dd class="text-right"> $10.00</dd>
+                            <dt>Donation:</dt>
+                            <dd class="text-right"> ${{donation}} </dd>
                         </dl>
                         <dl class="dlist-align">
                             <dt>Total:</dt>
-                            <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+                            <dd class="text-right text-dark b"><strong>${{total_price}}</strong></dd>
                         </dl>
                         <hr>
                         <p class="text-center mb-3">

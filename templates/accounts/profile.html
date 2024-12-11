@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}
+Profile
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-3">
+                <!--   SIDEBAR   -->
+                <ul class="list-group">
+                    <a class="list-group-item active" href="#"> Profile </a>
+                    <a class="list-group-item" href="#"> Transactions </a>
+                    <a class="list-group-item" href="#"> Return and refunds </a>
+                    <a class="list-group-item" href="#">Settings </a>
+                    <a class="list-group-item" href="#"> My Selling Items </a>
+                    <a class="list-group-item" href="#"> Received orders </a>
+                </ul>
+                <br>
+                <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i>
+                    <span class="text">Log
+                        out</span> </a>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+            <!-- ================== main content ================== -->
+            <main class="col-md-9">
+                <article class="card">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">
+                            Profile
+                        </strong>
+                    </header>
+                    <div class="card-body">
+
+                        <form method="post" class="row" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="col-md-12">
+                                <h6 class="text-muted">Profile Image</h6>
+                                {% if profile.image %}
+                                <img src="{{ profile.image.url }}" alt="profile image" class="img-thumbnail"
+                                    style="width: 200px; height: 200px;" onclick="changeImage()">
+                                {% else %}
+                                <input type="file" name="avatar" accept="image/*" id="avatar-input"
+                                    style="display: none;">
+                                <img src="{% static 'images/default.jpg' %}" alt="profile image" class="img-thumbnail"
+                                    style="width: 200px; height: 200px;" onclick="changeImage()">
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-md-6" style="margin-top: 20px;">
+                                <label>Region</label>
+                                <input type="text" class="form-control" name="region" value="{{ profile.region }}">
+
+                            </div>
+
+                            <div class="col-md-6" style="margin-top: 20px;">
+                                <label>District</label>
+                                <input type="text" class="form-control" name="district" value="{{ profile.district }}">
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Address</label>
+                                <input type="text" class="form-control" name="address" value="{{ profile.address }}">
+
+                            </div>
+
+                            <div class="col-md-6" style="margin-top: 20px;">
+                                <label>Tug'ilgan sana</label>
+                                <input type="date" class="form-control" name="birth_date"
+                                    value="{{ profile.birth_date }}">
+
+                            </div>
+
+                            <div class="col-md-12" style="margin-top: 20px;">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </form>
+
+                    </div> <!-- card-body .// -->
+
+                </article> <!-- order-group.// -->
+            </main>
+        </div> <!-- row.// -->
+    </div>
+    <script>
+        function changeImage() {
+            document.getElementById('avatar-input').click();
+        }
+    </script>
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

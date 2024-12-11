@@ -134,9 +134,9 @@
 
                         <form action="{% url 'add_cart' %}" method="post">
                             {% csrf_token %}
-                            <input type="hidden" name="product_id" value="{{ product.id }}">
-                            <input type="hidden" name="size_id" id="size_id" value="">
-                            <input type="hidden" name="color_id" id="color_id" value="">
+                            <input type="hidden" name="product_id" value="{{ product.id }}" required>
+                            <input type="hidden" name="size_id" id="size_id" value="" required>
+                            <input type="hidden" name="color_id" id="color_id" value="" required>
                             <button id='cart_botton' type="submit" class="btn btn-primary disabled">
                                 Add to cart
                                 <i class="fas fa-shopping-cart"></i>
