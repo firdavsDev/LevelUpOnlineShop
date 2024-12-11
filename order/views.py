@@ -26,3 +26,6 @@ def checkout(request):
     }
 
     return render(request, "order/checkout.html", context)
+
+
+# TODO  create order view py file
