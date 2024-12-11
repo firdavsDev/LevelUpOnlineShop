@@ -2,6 +2,7 @@ import random
 import string
 
 from django.conf import settings
+from .models import Cart
 
 
 def create_custom_session_key(request):
@@ -20,4 +21,10 @@ def get_session_key(request):
     return session_key
 
 
-# TODO def get_user_cart(request):
+def get_user_cart(request):
+    if request.user.is_authenticated:
+        user_cart = Cart.objects.get(user=request.user)
+    else:
+        session_key = get_session_key(request)
+        user_cart, _ = Cart.objects.get_or_create(session_key=session_key)
+    return user_cart

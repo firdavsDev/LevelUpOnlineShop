@@ -15,6 +15,8 @@ urlpatterns = [
     path("products/", include("products.urls")),
     # Cart apps
     path("cart/", include("cart.urls")),
+    # Order apps URLs
+    path("order/", include("order.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

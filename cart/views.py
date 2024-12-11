@@ -6,16 +6,11 @@ from django.shortcuts import redirect, render
 from products.models import ProductVariation
 
 from .models import Cart, CartItems
-from .utils import get_session_key
+from .utils import get_session_key, get_user_cart
 
 
 def cart(request):
-    # TODO DRY - Don't Repeat Yourself (context processor move to common app)
-    if request.user.is_authenticated:
-        user_cart = Cart.objects.get(user=request.user)
-    else:
-        session_key = get_session_key(request)
-        user_cart, _ = Cart.objects.get_or_create(session_key=session_key)
+    user_cart = get_user_cart(request)
 
     cart_items = CartItems.objects.filter(cart=user_cart)
     total_price = 0
@@ -37,11 +32,7 @@ def cart(request):
 
 def add_cart_item(request):
     # get user cart or create new cart via session key
-    if request.user.is_authenticated:
-        user_cart = Cart.objects.get(user=request.user)
-    else:
-        session_key = get_session_key(request)
-        user_cart, _ = Cart.objects.get_or_create(session_key=session_key)
+    user_cart = get_user_cart(request)
 
     if request.method == "POST":
         print("POST")

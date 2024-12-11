@@ -106,6 +106,7 @@ def register(request):
                 password=password1,
             )
             # TODO filter cart via session key and set user to cart
+            
             session_key = get_session_key(request)
             cart_obj, _ = Cart.objects.get_or_create(session_key=session_key)
             cart_obj.user = user_obj

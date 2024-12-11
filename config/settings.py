@@ -41,6 +41,7 @@ CUSTOM_APPS = [
     "accounts",
     "products",
     "cart",
+    "order",
 ]
 
 INSTALLED_APPS = [*BUILTIN_APPS, *THIRY_APPS, *CUSTOM_APPS]
@@ -72,7 +73,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 # Custom context_processors
-                "products.context_processors.custom_data",
+                "common.context_processors.custom_data",
             ],
         },
     },
