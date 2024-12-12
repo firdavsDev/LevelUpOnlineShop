@@ -5,15 +5,15 @@ from django.shortcuts import render
 from accounts.models import Profile
 from cart.utils import get_user_cart
 
+from django.views.decorators.cache import cache_page
 
-# Create your views here.
+@cache_page(60 * 15)
 def checkout(request):
     user_cart = get_user_cart(request)
     cart_items = user_cart.items.all()
-    # TODO use cache for calculation
     total_price = sum([item.price for item in cart_items])
-    # TODO donationi foizini adminkada belgilash
-    donation = total_price * Decimal("0.1")
+    percent = user_cart.percent
+    donation = total_price * Decimal(percent)
     grand_total = total_price + donation
     user_profile = Profile.objects.get(user=request.user)
 
@@ -26,6 +26,3 @@ def checkout(request):
     }
 
     return render(request, "order/checkout.html", context)
-
-
-# TODO  create order view py file
