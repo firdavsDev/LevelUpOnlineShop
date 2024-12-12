@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from smart_selects.db_fields import ChainedForeignKey
 
 from common.models import BaseModel, District, Region
 
@@ -37,8 +38,17 @@ class Profile(BaseModel):
     region = models.ForeignKey(
         Region, on_delete=models.CASCADE, related_name="region", null=True
     )
-    district = models.ForeignKey(
-        District, on_delete=models.CASCADE, related_name="district", null=True
+    # district = models.ForeignKey(
+    #     District, on_delete=models.CASCADE, related_name="district", null=True
+    # )
+    district = ChainedForeignKey(
+        District,
+        chained_field="region",  # this model field
+        chained_model_field="region",  # District model field
+        show_all=False,
+        auto_choose=True,
+        sort=True,
+        null=True,
     )
     address = models.TextField()
     phone = models.CharField(max_length=15)

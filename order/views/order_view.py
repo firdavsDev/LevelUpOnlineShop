@@ -1,13 +1,13 @@
 from decimal import Decimal
 
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 from accounts.models import Profile
 from cart.utils import get_user_cart
 
-from django.views.decorators.cache import cache_page
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def checkout(request):
     user_cart = get_user_cart(request)
     cart_items = user_cart.items.all()

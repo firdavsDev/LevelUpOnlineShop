@@ -9,6 +9,8 @@ from config.views import home_page
 urlpatterns = [
     path("", home_page, name="home"),
     path("admin/", admin.site.urls),
+    # Smart Selects URLs
+    path("chaining/", include("smart_selects.urls")),
     # Accounts App URLs
     path("accounts/", include("accounts.urls")),
     # Products App URLs

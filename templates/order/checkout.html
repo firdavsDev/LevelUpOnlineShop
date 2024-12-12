@@ -7,8 +7,6 @@
 <section class="section-content padding-y bg">
     <div class="container">
 
-
-
         <!-- ============================ COMPONENT 2 ================================= -->
         <div class="row">
             <main class="col-md-8">
@@ -42,37 +40,6 @@
                             {% endfor %}
 
                         </div> <!-- row.// -->
-                    </div> <!-- card-body.// -->
-                </article> <!-- card.// -->
-
-
-                <article class="card mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4">Contact info</h4>
-                        <form action="">
-                            <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <label>First name</label>
-                                    <input type="text" placeholder="Type here" class="form-control"
-                                        value="{{user_profile.first_name}}">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label>Last name</label>
-                                    <input type="text" placeholder="Type here" class="form-control"
-                                        value="{{user_profile.last_name}}">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control" placeholder="+998 "
-                                        value="{{user_profile.phone}}">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label>Email</label>
-                                    <input type="email" placeholder="example@gmail.com" class="form-control"
-                                        value="{{user_profile.email}}">
-                                </div>
-                            </div> <!-- row.// -->
-                        </form>
                     </div> <!-- card-body.// -->
                 </article> <!-- card.// -->
 
@@ -113,7 +80,20 @@
                                     <label>Postal code</label>
                                     <input type="text" placeholder="" class="form-control">
                                 </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Phone</label>
+                                    <input type="text" class="form-control" placeholder="+998 "
+                                        value="{{user_profile.phone}}">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Email</label>
+                                    <input type="email" placeholder="example@gmail.com" class="form-control"
+                                        value="{{user_profile.email}}">
+                                </div>
                             </div> <!-- row.// -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block"> Save </button>
+                            </div>
                         </form>
                     </div> <!-- card-body.// -->
                 </article> <!-- card.// -->
@@ -122,30 +102,8 @@
                 <article class="accordion" id="accordion_pay">
                     <div class="card">
                         <header class="card-header">
-                            <img src="{% static './images/misc/payment-paypal.png' %}" class="float-right" height="24">
-                            <label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
-                                <input class="form-check-input" name="payment-option" checked type="radio"
-                                    value="option2">
-                                <h6 class="form-check-label">
-                                    Paypal
-                                </h6>
-                            </label>
-                        </header>
-                        <div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
-                            <div class="card-body">
-                                <p class="text-center text-muted">Connect your PayPal account and use it to pay your
-                                    bills. You'll be redirected to PayPal to add your billing information.</p>
-                                <p class="text-center">
-                                    <a href="#"><img src="{% static './images/misc/btn-paypal.png' %}" height="32"></a>
-                                    <br><br>
-                                </p>
-                            </div> <!-- card body .// -->
-                        </div> <!-- collapse .// -->
-                    </div> <!-- card.// -->
-                    <div class="card">
-                        <header class="card-header">
                             <img src="{% static './images/misc/payment-card.png' %}" class="float-right" height="24">
-                            <label class="form-check" data-toggle="collapse" data-target="#pay_payme">
+                            <label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
                                 <input class="form-check-input" name="payment-option" type="radio" value="option2">
                                 <h6 class="form-check-label"> Credit Card </h6>
                             </label>

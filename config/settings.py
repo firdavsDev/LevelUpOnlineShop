@@ -33,7 +33,9 @@ BUILTIN_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRY_APPS = []  # pip install ... (only django app)
+THIRY_APPS = [
+    "smart_selects",
+]  # pip install ... (only django app)
 
 CUSTOM_APPS = [
     # Custom apps
@@ -148,3 +150,8 @@ CUSTOM_SESSION_KEY = "custom_session_key"
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 week
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+# Django Jquery
+
+USE_DJANGO_JQUERY = True
+JQUERY_URL = True
