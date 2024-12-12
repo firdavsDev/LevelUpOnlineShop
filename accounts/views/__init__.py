@@ -1,3 +1,3 @@
-# TODO register.py login.py
+from .login import *
 from .authicate import *
 from .profile import *

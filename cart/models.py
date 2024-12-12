@@ -6,6 +6,7 @@ from products.models import ProductVariation
 
 
 class Cart(BaseModel):
+    percent = models.FloatField(default=0.01)
     user = models.OneToOneField(
         CustomUser, on_delete=models.CASCADE, related_name="cart", null=True
     )

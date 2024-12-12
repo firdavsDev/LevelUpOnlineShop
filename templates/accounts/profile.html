@@ -41,7 +41,7 @@ Profile
                     </header>
                     <div class="card-body">
 
-                        <form method="post" class="row" enctype="multipart/form-data">
+                        <form method="post" action="{% url 'update_profile' %}" class="row" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="col-md-12">
@@ -60,13 +60,32 @@ Profile
 
                             <div class="col-md-6" style="margin-top: 20px;">
                                 <label>Region</label>
-                                <input type="text" class="form-control" name="region" value="{{ profile.region }}">
+                                <select class="mr-2 form-control" name="region" onchange="getDistrictByRegion">
+
+                                    <option value="{{profile.region.id}}" selected>{{profile.region}}</option>
+
+                                    {% for region in regions %}
+                                        <option value="{{region.id}}">{{region}}</option>
+                                    {% empty %}
+                                        <option>No region</option>
+                                    {% endfor %}
+                                </select>
 
                             </div>
 
                             <div class="col-md-6" style="margin-top: 20px;">
                                 <label>District</label>
-                                <input type="text" class="form-control" name="district" value="{{ profile.district }}">
+                                <select class="mr-2 form-control" name="district">
+                                    
+                                    <option value="{{profile.district.id}}" selected>{{profile.district}}</option>
+                                    
+                                    {% for district in districts %}
+                                        <option value="{{district.id}}">{{district}}</option>
+                                    {% empty %}
+                                    <option>No district</option>
+                                    {% endfor %}
+                                </select>
+
 
                             </div>
 
@@ -102,4 +121,41 @@ Profile
 
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+<script>
+    function getDistrictByRegion() {
+        var size = document.getElementById("size").value;
+        // send as id ur /url?size=1 via ajax
+        var productDetailId = {{ product.id }} ;
+
+        // create ajax object
+        ajaxClint = new XMLHttpRequest();
+        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size, true);
+        ajaxClint.send();
+
+        ajaxClint.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // here we get the response from the server and set color options
+                let color_select = document.getElementById("color");
+                let product_variations = JSON.parse(this.responseText);
+                color_select.innerHTML = "";
+                //default option for color
+                let default_option = document.createElement("option");
+                default_option.disabled = true;
+                default_option.selected = true;
+                default_option.text = "Please Choose color";
+                color_select.appendChild(default_option);
+                product_variations.forEach(function (product_variation) {
+                    let option = document.createElement("option");
+                    option.value = product_variation.color__id;
+                    option.text = product_variation.color__name;
+                    color_select.appendChild(option);
+
+                });
+
+            }
+        }
+
+    }
+
+</script>
 {% endblock %}

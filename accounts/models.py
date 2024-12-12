@@ -33,7 +33,7 @@ class Profile(BaseModel):
     )
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    birth_date = models.DateField()
+    birth_date = models.DateField(null=True)
     region = models.ForeignKey(
         Region, on_delete=models.CASCADE, related_name="region", null=True
     )
