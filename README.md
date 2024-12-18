@@ -16,7 +16,6 @@ The project has the following features:
 - Add to cart
 - Remove from cart
 - Update cart
-- Cart detail
 - Order list
 - Order detail
 - Order create
