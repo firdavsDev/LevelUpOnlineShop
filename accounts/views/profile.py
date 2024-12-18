@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from common.models import District, Region
 
@@ -36,14 +36,13 @@ def update_profile(request):
         birth_date = request.POST.get("birth_date")
         print(region_id)
 
-        region_obj = regions.get(id = region_id)
-        district_obj = districts.get(id = district_id)
+        region_obj = regions.get(id=region_id)
+        district_obj = districts.get(id=district_id)
         profile.region = region_obj
         profile.district = district_obj
         profile.address = address
         profile.birth_date = birth_date
         profile.save()
-        
 
     context = {
         "profile": profile,

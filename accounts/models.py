@@ -28,7 +28,7 @@ class CustomUser(AbstractUser):
 
 
 class Profile(BaseModel):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)  # unique=True
     image = models.ImageField(
         upload_to="profile/", null=True, blank=True, default="profile/avatar.jpg"
     )

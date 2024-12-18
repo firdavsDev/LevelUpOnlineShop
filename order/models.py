@@ -42,3 +42,8 @@ class Order(BaseModel):
         ordering = ["-created_at"]
         verbose_name = "Order"
         verbose_name_plural = "Orders"
+
+    def save(self, *args, **kwargs):
+        total_price = sum([item.price for item in self.cart_items.all()])
+        self.total_price = total_price
+        super().save(*args, **kwargs)

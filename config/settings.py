@@ -21,7 +21,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
-
+INTERNAL_IPS = [*ALLOWED_HOSTS, "localhost"]
 
 # Application definition
 BUILTIN_APPS = [
@@ -35,6 +35,7 @@ BUILTIN_APPS = [
 
 THIRY_APPS = [
     "smart_selects",
+    "debug_toolbar",
 ]  # pip install ... (only django app)
 
 CUSTOM_APPS = [
@@ -60,6 +61,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Debug Toolbar
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 ROOT_URLCONF = "config.urls"
 
@@ -154,4 +157,3 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # Django Jquery
 
 USE_DJANGO_JQUERY = True
-JQUERY_URL = True

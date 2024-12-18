@@ -53,29 +53,25 @@
                             <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label>Region</label>
-                                    <select name="" class="form-control">
-                                        <option value="">India</option>
-                                        <option value="">United States</option>
-                                        <option value="">France</option>
-                                        <option value="">Italy</option>
+                                    <select name="region" class="form-control">
+                                        {% for region in regions %}
+                                        <option value="{{ region.id }}">{{ region.name }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>District*</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
+                                    <select name="region" class="form-control">
+                                        {% for district in districts %}
+                                        <option value="{{ district.id }}">{{ district.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
-                                <div class="form-group col-sm-8">
+                                <div class="form-group col-sm-6">
                                     <label>Street*</label>
                                     <input type="text" placeholder="Type here" class="form-control">
                                 </div>
-                                <div class="form-group col-sm-4">
-                                    <label>Building</label>
-                                    <input type="text" placeholder="" class="form-control">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label>House</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
-                                </div>
+
                                 <div class="form-group col-sm-6">
                                     <label>Postal code</label>
                                     <input type="text" placeholder="" class="form-control">
@@ -93,39 +89,13 @@
                             </div> <!-- row.// -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block"> Save </button>
+                                <a href="{% url 'payment' %}" class="btn btn-light btn-block">Pay</a>
                             </div>
                         </form>
                     </div> <!-- card-body.// -->
                 </article> <!-- card.// -->
 
 
-                <article class="accordion" id="accordion_pay">
-                    <div class="card">
-                        <header class="card-header">
-                            <img src="{% static './images/misc/payment-card.png' %}" class="float-right" height="24">
-                            <label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
-                                <input class="form-check-input" name="payment-option" type="radio" value="option2">
-                                <h6 class="form-check-label"> Credit Card </h6>
-                            </label>
-                        </header>
-                        <div id="pay_payme" class="collapse" data-parent="#accordion_pay">
-                            <div class="card-body">
-                                <p class="alert alert-success">Some information or instruction</p>
-                                <form class="form-inline">
-                                    <input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx"
-                                        name="">
-                                    <input type="text" class="form-control mr-2" style="width: 100px"
-                                        placeholder="dd/yy" name="">
-                                    <input type="number" maxlength="3" class="form-control mr-2" style="width: 100px"
-                                        placeholder="cvc" name="">
-                                    <button class="btn btn btn-success">Button</button>
-                                </form>
-                            </div> <!-- card body .// -->
-                        </div> <!-- collapse .// -->
-                    </div> <!-- card.// -->
-
-                </article>
-                <!-- accordion end.// -->
 
             </main> <!-- col.// -->
 
@@ -148,7 +118,6 @@
                         <p class="text-center mb-3">
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
-                        <a href="./place-order.html" class="btn btn-primary btn-block"> Place Order </a>
 
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->
@@ -156,9 +125,6 @@
         </div> <!-- row.// -->
 
         <!-- ============================ COMPONENT 2 END//  ================================= -->
-
-
-
 
     </div> <!-- container .//  -->
 </section>

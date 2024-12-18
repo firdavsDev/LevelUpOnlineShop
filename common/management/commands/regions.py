@@ -1,3 +1,8 @@
+"""
+ python manage.py regions (file_name without .py)
+
+"""
+
 import pandas as pd
 from django.core.management.base import BaseCommand, CommandError
 

@@ -1,10 +1,12 @@
 from decimal import Decimal
 
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
 
 from accounts.models import Profile
 from cart.utils import get_user_cart
+from common.models import District, Region
+
+# from django.views.decorators.cache import cache_page
 
 
 # @cache_page(60 * 15)
@@ -19,6 +21,8 @@ def checkout(request):
 
     context = {
         "cart_items": cart_items,
+        "regions": Region.objects.filter(is_active=True),
+        "districts": District.objects.filter(is_active=True),
         "total_price": total_price,
         "donation": round(donation, 2),
         "grand_total": round(grand_total, 2),

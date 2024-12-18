@@ -23,7 +23,7 @@ Profile
                     <a class="list-group-item" href="#"> Return and refunds </a>
                     <a class="list-group-item" href="#">Settings </a>
                     <a class="list-group-item" href="#"> My Selling Items </a>
-                    <a class="list-group-item" href="#"> Received orders </a>
+                    <a class="list-group-item" href="{% url 'my_order_list' %}"> Received orders </a>
                 </ul>
                 <br>
                 <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i>
@@ -41,7 +41,8 @@ Profile
                     </header>
                     <div class="card-body">
 
-                        <form method="post" action="{% url 'update_profile' %}" class="row" enctype="multipart/form-data">
+                        <form method="post" action="{% url 'update_profile' %}" class="row"
+                            enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="col-md-12">
@@ -65,9 +66,9 @@ Profile
                                     <option value="{{profile.region.id}}" selected>{{profile.region}}</option>
 
                                     {% for region in regions %}
-                                        <option value="{{region.id}}">{{region}}</option>
+                                    <option value="{{region.id}}">{{region}}</option>
                                     {% empty %}
-                                        <option>No region</option>
+                                    <option>No region</option>
                                     {% endfor %}
                                 </select>
 
@@ -76,11 +77,11 @@ Profile
                             <div class="col-md-6" style="margin-top: 20px;">
                                 <label>District</label>
                                 <select class="mr-2 form-control" name="district">
-                                    
+
                                     <option value="{{profile.district.id}}" selected>{{profile.district}}</option>
-                                    
+
                                     {% for district in districts %}
-                                        <option value="{{district.id}}">{{district}}</option>
+                                    <option value="{{district.id}}">{{district}}</option>
                                     {% empty %}
                                     <option>No district</option>
                                     {% endfor %}
@@ -125,35 +126,36 @@ Profile
     function getDistrictByRegion() {
         var size = document.getElementById("size").value;
         // send as id ur /url?size=1 via ajax
-        var productDetailId = {{ product.id }} ;
+        var productDetailId = {{ product.id }
+    };
 
-        // create ajax object
-        ajaxClint = new XMLHttpRequest();
-        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size, true);
-        ajaxClint.send();
+    // create ajax object
+    ajaxClint = new XMLHttpRequest();
+    ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size, true);
+    ajaxClint.send();
 
-        ajaxClint.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // here we get the response from the server and set color options
-                let color_select = document.getElementById("color");
-                let product_variations = JSON.parse(this.responseText);
-                color_select.innerHTML = "";
-                //default option for color
-                let default_option = document.createElement("option");
-                default_option.disabled = true;
-                default_option.selected = true;
-                default_option.text = "Please Choose color";
-                color_select.appendChild(default_option);
-                product_variations.forEach(function (product_variation) {
-                    let option = document.createElement("option");
-                    option.value = product_variation.color__id;
-                    option.text = product_variation.color__name;
-                    color_select.appendChild(option);
+    ajaxClint.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // here we get the response from the server and set color options
+            let color_select = document.getElementById("color");
+            let product_variations = JSON.parse(this.responseText);
+            color_select.innerHTML = "";
+            //default option for color
+            let default_option = document.createElement("option");
+            default_option.disabled = true;
+            default_option.selected = true;
+            default_option.text = "Please Choose color";
+            color_select.appendChild(default_option);
+            product_variations.forEach(function (product_variation) {
+                let option = document.createElement("option");
+                option.value = product_variation.color__id;
+                option.text = product_variation.color__name;
+                color_select.appendChild(option);
 
-                });
+            });
 
-            }
         }
+    }
 
     }
 
