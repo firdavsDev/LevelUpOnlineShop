@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from common.models import District, Region
@@ -51,3 +52,11 @@ def update_profile(request):
         "districts": districts,
     }
     return render(request, "accounts/profile.html", context)
+
+
+@login_required
+def get_districts_by_region(request, region_id):
+    districts = District.objects.filter(region_id=region_id).values("id", "name")
+    print("!!!!!!!!!!!!!!!!!!")
+    print(districts)
+    return JsonResponse({"districts": list(districts)})

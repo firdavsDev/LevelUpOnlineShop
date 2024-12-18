@@ -47,47 +47,60 @@
                 <article class="card mb-4">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Delivery info</h4>
-                        <form action="">
+                        <form method="post" action="{% url 'checkout' %}">
 
 
                             <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label>Region</label>
-                                    <select name="" class="form-control">
-                                        <option value="">India</option>
-                                        <option value="">United States</option>
-                                        <option value="">France</option>
-                                        <option value="">Italy</option>
+                                    <select class="mr-2 form-control" name="region" onchange="getDistrictByRegion()">
+
+                                        <option value="{{profile.region.id}}" selected>{{profile.region}}</option>
+    
+                                        {% for region in regions %}
+                                            <option value="{{region.id}}">{{region}}</option>
+                                        {% empty %}
+                                            <option>No region</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label>District*</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
+                                    <label>District*</label>                                
+                                    <select class="mr-2 form-control" name="district">
+
+                                        <option value="{{profile.district.id}}" selected>{{profile.district}}</option>
+                                        
+                                        {% for district in districts %}
+                                            <option value="{{district.id}}">{{district}}</option>
+                                        {% empty %}
+                                        <option>No district</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="form-group col-sm-8">
                                     <label>Street*</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
+                                    <input name="street" type="text" placeholder="Type here" class="form-control">
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label>Building</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input name="building" type="text" placeholder="" class="form-control">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>House</label>
-                                    <input type="text" placeholder="Type here" class="form-control">
+                                    <input name="house" type="text" placeholder="Type here" class="form-control">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Postal code</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input name="postal_code" type="text" placeholder="" class="form-control">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Phone</label>
-                                    <input type="text" class="form-control" placeholder="+998 "
+                                    <input name="phone" type="text" class="form-control" placeholder="+998 "
                                         value="{{user_profile.phone}}">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Email</label>
-                                    <input type="email" placeholder="example@gmail.com" class="form-control"
+                                    <input name="email" type="email" placeholder="example@gmail.com" class="form-control"
                                         value="{{user_profile.email}}">
                                 </div>
                             </div> <!-- row.// -->

@@ -60,7 +60,7 @@ Profile
 
                             <div class="col-md-6" style="margin-top: 20px;">
                                 <label>Region</label>
-                                <select class="mr-2 form-control" name="region" onchange="getDistrictByRegion">
+                                <select class="mr-2 form-control" name="region" onchange="getDistrictByRegion()">
 
                                     <option value="{{profile.region.id}}" selected>{{profile.region}}</option>
 
@@ -76,7 +76,7 @@ Profile
                             <div class="col-md-6" style="margin-top: 20px;">
                                 <label>District</label>
                                 <select class="mr-2 form-control" name="district">
-                                    
+
                                     <option value="{{profile.district.id}}" selected>{{profile.district}}</option>
                                     
                                     {% for district in districts %}
@@ -122,40 +122,41 @@ Profile
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 <script>
-    function getDistrictByRegion() {
-        var size = document.getElementById("size").value;
-        // send as id ur /url?size=1 via ajax
-        var productDetailId = {{ product.id }} ;
+function getDistrictByRegion() {
+    const regionSelect = document.querySelector('select[name="region"]');
+    const districtSelect = document.querySelector('select[name="district"]');
+    const regionId = regionSelect.value;
 
-        // create ajax object
-        ajaxClint = new XMLHttpRequest();
-        ajaxClint.open("GET", `/products/${productDetailId}/?size_id=` + size, true);
-        ajaxClint.send();
+    districtSelect.innerHTML = '<option>Loading...</option>';
 
-        ajaxClint.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // here we get the response from the server and set color options
-                let color_select = document.getElementById("color");
-                let product_variations = JSON.parse(this.responseText);
-                color_select.innerHTML = "";
-                //default option for color
-                let default_option = document.createElement("option");
-                default_option.disabled = true;
-                default_option.selected = true;
-                default_option.text = "Please Choose color";
-                color_select.appendChild(default_option);
-                product_variations.forEach(function (product_variation) {
-                    let option = document.createElement("option");
-                    option.value = product_variation.color__id;
-                    option.text = product_variation.color__name;
-                    color_select.appendChild(option);
-
-                });
-
+    fetch(`/get-districts-by-region/${regionId}/`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        }
+            return response.json();
+        })
+        .then(data => {
+            districtSelect.innerHTML = '';
 
-    }
+            if (data.districts && data.districts.length > 0) {
+                data.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.id;
+                    option.textContent = district.name;
+                    districtSelect.appendChild(option);
+                });
+            } else {
+                const option = document.createElement('option');
+                option.textContent = 'No districts available';
+                districtSelect.appendChild(option);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching districts:', error);
+            districtSelect.innerHTML = '<option>Error loading districts</option>';
+        });
+}
 
 </script>
 {% endblock %}

@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from accounts.models import Profile
 from cart.models import CartItems
-from common.models import BaseModel
+from common.models import BaseModel, District, Region
 
 """
 Order model:
@@ -42,3 +43,21 @@ class Order(BaseModel):
         ordering = ["-created_at"]
         verbose_name = "Order"
         verbose_name_plural = "Orders"
+
+
+class Delivery(BaseModel):
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name="delivery"
+    )
+    region = models.ForeignKey(
+        Region, on_delete=models.CASCADE, related_name="delivery_region", null=True
+    )
+    district = models.ForeignKey(
+        District, on_delete=models.CASCADE, related_name="delivery_district", null=True
+    )
+    street = models.CharField(max_length=100, blank=True, null=True)
+    building = models.CharField(max_length=50, blank=True, null=True)
+    house = models.CharField(max_length=50, blank=True, null=True)
+    postal_code = models.CharField(max_length=15, blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(_("email address"))
