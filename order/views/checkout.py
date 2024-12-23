@@ -8,6 +8,10 @@ from common.models import District, Region
 
 # from django.views.decorators.cache import cache_page
 
+from common.models import District, Region
+from order.models import Delivery, Order
+
+from ..forms import CheckoutFormModel
 
 # @cache_page(60 * 15)
 def checkout(request):
@@ -16,17 +20,37 @@ def checkout(request):
     total_price = sum([item.price for item in cart_items])
     percent = user_cart.percent
     donation = total_price * Decimal(percent)
-    grand_total = total_price + donation
-    user_profile = Profile.objects.get(user=request.user)
+    grand_total = total_price + donation 
+
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    initial = {
+        'region': profile.region,
+        'district': profile.district,
+        'street': profile.address,
+        'phone': profile.phone,
+        'email': profile.email,
+    }
+    order_obj = Order.objects.create(
+        customer=profile,
+        status="ACTIVE",
+        total_price=total_price,
+    )
+    order_obj.cart_items.add(cart_items)
+
+    checkout_form = CheckoutFormModel(initial=initial)
+
+    if request.method == "POST":
+        checkout_form = CheckoutFormModel(request.POST, initial=initial)
+        if checkout_form.is_valid():
+            checkout_form.save(order_obj=order_obj)
 
     context = {
-        "cart_items": cart_items,
-        "regions": Region.objects.filter(is_active=True),
-        "districts": District.objects.filter(is_active=True),
+        "cart_items":cart_items,
         "total_price": total_price,
         "donation": round(donation, 2),
         "grand_total": round(grand_total, 2),
-        "user_profile": user_profile,
+        "checkout_form": checkout_form,
     }
 
     return render(request, "order/checkout.html", context)

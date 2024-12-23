@@ -16,46 +16,14 @@
       <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
 
-        <div class="form-row">
+        {{ registar_form }}
 
-          <div class="col form-group">
-            <label>First name</label>
-            <input name="f_name" type="text" class="form-control" placeholder="">
-          </div> <!-- form-group end.// -->
-
-          <div class="col form-group">
-            <label>Last name</label>
-            <input name="l_name" type="text" class="form-control" placeholder="">
-          </div> <!-- form-group end.// -->
-
-        </div> <!-- form-row end.// -->
-
-        <div class="form-group">
-          <label>Email</label>
-          <input name="email" type="email" class="form-control" placeholder="">
-          <small class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div> <!-- form-group end.// -->
-
-        <div class="form-row">
-
-          <div class="form-group col-md-5">
-            <label>Create password</label>
-            <input name="password1" class="form-control" type="password">
-          </div> <!-- form-group end.// -->
-
-          <div class="form-group col-md-5">
-            <label>Repeat password</label>
-            <input name="password2" class="form-control" type="password">
-            <!-- show password icon -->
-
-          </div> <!-- form-group end.// -->
           <div class="form-group col-md-2">
             <button type="button" class="btn btn-light" onclick="showPassword()">
               <i class="fa fa-eye"></i>
             </button>
           </div>
 
-        </div>
 
         <div class="form-group">
           <button type="submit" class="btn btn-primary btn-block"> Register </button>
