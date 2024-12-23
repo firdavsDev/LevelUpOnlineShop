@@ -28,7 +28,7 @@ class CartItems(BaseModel):
         ProductVariation, on_delete=models.CASCADE, null=True
     )
     quantity = models.PositiveSmallIntegerField(default=1)
-    # is_ordered = models.BooleanField(default=False)
+    is_ordered = models.BooleanField(default=False)
 
     @property
     def price(self):

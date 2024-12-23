@@ -1,0 +1,133 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}
+Profile
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-3">
+                <!--   SIDEBAR   -->
+                <ul class="list-group">
+                    <a class="list-group-item" href="#"> Profile </a>
+                    <a class="list-group-item" href="#"> Transactions </a>
+                    <a class="list-group-item" href="#"> Return and refunds </a>
+                    <a class="list-group-item" href="#">Settings </a>
+                    <a class="list-group-item" href="#"> My Selling Items </a>
+                    <a class="list-group-item active" href="#"> Received orders </a>
+                </ul>
+                <br>
+                <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i>
+                    <span class="text">Log
+                        out</span> </a>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+            <!-- ================== main content ================== -->
+            <main class="col-md-9">
+                <article class="card">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">
+                            My Orders
+                        </strong>
+                    </header>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <!-- search -->
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label class="mr-2">Search:</label>
+                                    <input class="form-control" type="text" placeholder="Search">
+                                </div>
+                            </form>
+                            <!-- filter by status form -->
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label class="mr-2">Filter by status:</label>
+                                    <select class="form-control">
+                                        <option value="all">All</option>
+                                        <option value="new">New</option>
+                                        <option value="paid">Paid</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="cancelled">Cancelled</option>
+                                        <option value="delivered">Delivered</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Mahsulotlar nomi</th>
+                                    <th scope="col">Mahsulot holati</th>
+                                    <th scope="col">Narxi</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for order in my_orders %}
+                                <tr>
+                                    <th scope="row">
+                                        {{ forloop.counter }}
+                                    </th>
+                                    <td>
+                                        <ul>
+                                            {% for item in order.cart_items.all %}
+                                            <li>
+                                                {{ item.product_variant.product.name }} - {{ item.quantity }} dona
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        {% if order.status == 'ACTIVE' %}
+                                        Yangi
+                                        {% elif order.status == 'PAID' %}
+                                        To'lov qilindi
+                                        {% elif order.status == 'PROCESSING' %}
+                                        Jarayonda
+                                        {% elif order.status == 'CANCELLED' %}
+                                        Bekor qilingan
+                                        {% elif order.status == 'DELIVERED' %}
+                                        Yetkazib berilgan
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ order.total_price }} so'm
+                                    </td>
+                                    {% empty %}
+                                    <td colspan="4">
+                                        Sizda hech qanday buyurtma yo'q
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div> <!-- card-body .// -->
+
+                </article> <!-- order-group.// -->
+            </main>
+        </div> <!-- row.// -->
+    </div>
+    <script>
+        function changeImage() {
+            document.getElementById('avatar-input').click();
+        }
+    </script>
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from common.models import District, Region
 
 from ..models import Profile
+from ..forms import UpdateProfileFormModel
 
 # from ..forms import ProfileForm
 
@@ -27,36 +28,29 @@ def profile(request):
 def update_profile(request):
     user = request.user
     profile = Profile.objects.get(user=user)
-    regions = Region.objects.all()
-    districts = District.objects.all()
+    initial = {
+        'region': profile.region.id,
+        'district': profile.district.id,
+        'address': profile.address,
+        'birth_date': profile.birth_date
+    }
 
+    profile_form = UpdateProfileFormModel(instance=profile, initial=initial)
+    
     if request.method == "POST":
-        region_id = request.POST.get("region")
-        district_id = request.POST.get("district")
-        address = request.POST.get("address")
-        birth_date = request.POST.get("birth_date")
-        print(region_id)
-
-        region_obj = regions.get(id = region_id)
-        district_obj = districts.get(id = district_id)
-        profile.region = region_obj
-        profile.district = district_obj
-        profile.address = address
-        profile.birth_date = birth_date
-        profile.save()
-        
+        profile_form = UpdateProfileFormModel(data=request.POST, instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
 
     context = {
-        "profile": profile,
-        "regions": regions,
-        "districts": districts,
+        "profile_form": profile_form,
     }
+    
     return render(request, "accounts/profile.html", context)
+
 
 
 @login_required
 def get_districts_by_region(request, region_id):
     districts = District.objects.filter(region_id=region_id).values("id", "name")
-    print("!!!!!!!!!!!!!!!!!!")
-    print(districts)
     return JsonResponse({"districts": list(districts)})

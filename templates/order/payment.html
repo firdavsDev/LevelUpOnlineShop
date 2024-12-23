@@ -1,0 +1,57 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 2 ================================= -->
+        <div class="row">
+            <main class="col-md-12">
+
+                <article class="accordion" id="accordion_pay">
+
+
+                    <div class="card">
+                        <header class="card-header">
+                            <img src="{% static './images/misc/payment-card.png' %}" class="float-right" height="24">
+                            <label class="form-check">
+                                <input class="form-check-input" name="payment-option" type="radio" value="option2">
+                                <h6 class="form-check-label"> Plastik karta orqali </h6>
+                            </label>
+                        </header>
+                        <div id="pay_payme" class="collapse show" data-parent="#accordion_pay">
+                            <div class="card-body" style="background: #f9f9f9">
+                                <p class="alert alert-success">Some information or instruction</p>
+                                <form class="form-inline" method="post" action="">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx"
+                                        name="">
+                                    <input type="text" class="form-control mr-2" style="width: 100px"
+                                        placeholder="dd/yy" name="">
+                                    <button class="btn btn btn-success">Saqlash</button>
+                                </form>
+                            </div> <!-- card body .// -->
+                        </div> <!-- collapse .// -->
+                    </div>
+
+                </article>
+                <!-- accordion end.// -->
+
+
+            </main> <!-- col.// -->
+
+        </div> <!-- row.// -->
+
+        <!-- ============================ COMPONENT 2 END//  ================================= -->
+
+
+
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}
