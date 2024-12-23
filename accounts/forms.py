@@ -1,9 +1,11 @@
+from datetime import timedelta
+
 from django import forms
-from .models import CustomUser, Region, District, Profile
+from django.utils import timezone
+
 from order.models import Delivery
 
-from django.utils import timezone
-from datetime import timedelta
+from .models import CustomUser, District, Profile, Region
 
 
 class SimpleLoginForm(forms.Form):
@@ -79,7 +81,6 @@ class RegistarForm(forms.Form):
             self.add_error("email", "Email must be gmail")
 
         return cleaned_data
-    
 
     def save(self):
         first_name = self.cleaned_data["first_name"]
@@ -93,30 +94,35 @@ class RegistarForm(forms.Form):
             username=email,
             first_name=first_name,
             last_name=last_name,
+            is_active=False,  # Emailni tasdiqlaganidan keyin True qilish kerak
         )
         return user_obj
-    
+
 
 class UpdateProfileFormModel(forms.ModelForm):
     region = forms.ModelChoiceField(
         queryset=Region.objects.filter(is_active=True),
         empty_label="Select region",
-        widget=forms.Select(attrs={"class": "form-select", "id": "id_region"})
+        widget=forms.Select(attrs={"class": "form-select", "id": "id_region"}),
     )
 
     district = forms.ModelChoiceField(
         queryset=District.objects.none(),  # Dastlab bo'sh districtlar
         empty_label="Select district",
-        widget=forms.Select(attrs={"class": "form-select", "id": "id_district"})
+        widget=forms.Select(attrs={"class": "form-select", "id": "id_district"}),
     )
-    address = forms.CharField(max_length=40,)
+    address = forms.CharField(
+        max_length=40,
+    )
     birth_date = forms.DateField(
-        widget=forms.DateInput(format="%Y-%m-%d",
-                               attrs={'type': 'date',
-                                      'min': str((timezone.now() - timedelta(days=365)).date()),
-                                      'max': str(timezone.now().date())
-                                      }
-                                ),
+        widget=forms.DateInput(
+            format="%Y-%m-%d",
+            attrs={
+                "type": "date",
+                "min": str((timezone.now() - timedelta(days=365)).date()),
+                "max": str(timezone.now().date()),
+            },
+        ),
         input_formats=["%d/%m/%Y", "%Y-%m-%d"],
     )
 
@@ -142,12 +148,12 @@ class UpdateProfileFormModel(forms.ModelForm):
             ),
             "district": forms.EmailInput(
                 attrs={"class": "form-control", "placeholder": "Enter your district"}
-                ),
+            ),
             "address": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "Enter your address"}
-                ),
+            ),
             "birth_date": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Enter your birth_date"}
-                ),
+            ),
         }
         error_css_class = "danger"

@@ -51,11 +51,18 @@ class Profile(BaseModel):
         null=True,
     )
     address = models.TextField()
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def save(self, *args, **kwargs):
+        self.first_name = self.user.first_name
+        self.last_name = self.user.last_name
+        self.email = self.user.email
+        self.phone = self.user.phone
+        super(Profile, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Profile")

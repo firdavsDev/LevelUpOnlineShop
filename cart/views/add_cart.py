@@ -50,7 +50,6 @@ def add_cart_item(request):
         cart_item, created = CartItems.objects.get_or_create(
             cart=user_cart, product_variant=product_variant
         )
-        print("created", created)
         if cart_item.product_variant.stock != 0:
             if not created:
                 cart_item.quantity += 1

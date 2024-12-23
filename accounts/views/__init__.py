@@ -1,3 +1,4 @@
+from .activate import *
 from .login import *
-from .authicate import *
 from .profile import *
+from .register import *

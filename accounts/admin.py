@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import CustomUser, Profile
 
+# TODO: Add Profile to the admin panel
 admin.site.register(Profile)
 
 

@@ -18,9 +18,7 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = [*ALLOWED_HOSTS, "localhost"]
 
 # Application definition
