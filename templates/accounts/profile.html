@@ -66,42 +66,43 @@ Profile
 
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
-<script>
-function getDistrictByRegion() {
-    const regionSelect = document.querySelector('select[name="region"]');
-    const districtSelect = document.querySelector('select[name="district"]');
-    const regionId = regionSelect.value;
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const regionSelect = document.getElementById('id_region');  // Region select
+        const districtSelect = document.getElementById('id_district');  // District select
 
-    districtSelect.innerHTML = '<option>Loading...</option>';
+        // Region o'zgarganda districtlarni yangilash
+        regionSelect.addEventListener('change', function () {
+            const regionId = regionSelect.value;  // Tanlangan region ID
 
-    fetch(`/get-districts-by-region/${regionId}/`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            // Agar region tanlanmagan bo'lsa, districtlarni bo'shatish
+            if (!regionId) {
+                districtSelect.innerHTML = '<option value="">Select district</option>';
+                return;
             }
-            return response.json();
-        })
-        .then(data => {
-            districtSelect.innerHTML = '';
 
-            if (data.districts && data.districts.length > 0) {
-                data.districts.forEach(district => {
-                    const option = document.createElement('option');
-                    option.value = district.id;
-                    option.textContent = district.name;
-                    districtSelect.appendChild(option);
+            // Region bo'yicha districtlarni olish uchun AJAX so'rov yuborish
+            fetch(`/get-districts/${regionId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    // Districtlarni yangilash
+                    districtSelect.innerHTML = '<option value="">Select district</option>';  // Oldingi variantlarni o\'chirish
+                    
+                    // Yangi district variantlarini qo\'shish
+                    data.districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district.id;
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Districtlar olishda xatolik:', error);
                 });
-            } else {
-                const option = document.createElement('option');
-                option.textContent = 'No districts available';
-                districtSelect.appendChild(option);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching districts:', error);
-            districtSelect.innerHTML = '<option>Error loading districts</option>';
         });
-}
-
+    });
 </script>
+
+
+
 {% endblock %}

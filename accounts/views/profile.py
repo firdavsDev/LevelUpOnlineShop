@@ -25,32 +25,35 @@ def profile(request):
     return render(request, "accounts/profile.html", context)
 
 
+@login_required
 def update_profile(request):
     user = request.user
     profile = Profile.objects.get(user=user)
+    
+    # Formni initial qiymatlar bilan to'ldirish
     initial = {
-        'region': profile.region.id,
-        'district': profile.district.id,
+        'region': profile.region,
+        'district': profile.district,
         'address': profile.address,
         'birth_date': profile.birth_date
     }
-
-    profile_form = UpdateProfileFormModel(instance=profile, initial=initial)
     
+    profile_form = UpdateProfileFormModel(instance=profile, initial=initial)
+
     if request.method == "POST":
-        profile_form = UpdateProfileFormModel(data=request.POST, instance=profile)
+        profile_form = UpdateProfileFormModel(request.POST, request.FILES, instance=profile)
         if profile_form.is_valid():
             profile_form.save()
 
     context = {
         "profile_form": profile_form,
     }
-    
     return render(request, "accounts/profile.html", context)
-
-
 
 @login_required
 def get_districts_by_region(request, region_id):
-    districts = District.objects.filter(region_id=region_id).values("id", "name")
-    return JsonResponse({"districts": list(districts)})
+    try:
+        districts = District.objects.filter(region_id=region_id).values("id", "name")
+        return JsonResponse({"districts": list(districts)})
+    except District.DoesNotExist:
+        return JsonResponse({"districts": []})

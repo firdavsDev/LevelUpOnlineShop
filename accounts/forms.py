@@ -1,5 +1,6 @@
 from django import forms
 from .models import CustomUser, Region, District, Profile
+from order.models import Delivery
 
 from django.utils import timezone
 from datetime import timedelta
@@ -100,14 +101,15 @@ class UpdateProfileFormModel(forms.ModelForm):
     region = forms.ModelChoiceField(
         queryset=Region.objects.filter(is_active=True),
         empty_label="Select region",
-        widget=forms.Select(attrs={"class": "form-select"}),
+        widget=forms.Select(attrs={"class": "form-select", "id": "id_region"})
     )
+
     district = forms.ModelChoiceField(
-        queryset=District.objects.filter(is_active=True),
+        queryset=District.objects.none(),  # Dastlab bo'sh districtlar
         empty_label="Select district",
-        widget=forms.Select(attrs={"class": "form-select"}),
+        widget=forms.Select(attrs={"class": "form-select", "id": "id_district"})
     )
-    address = forms.CharField(max_length=40, initial="1234")
+    address = forms.CharField(max_length=40,)
     birth_date = forms.DateField(
         widget=forms.DateInput(format="%Y-%m-%d",
                                attrs={'type': 'date',

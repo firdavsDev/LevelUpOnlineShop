@@ -11,6 +11,8 @@ from common.models import District, Region
 from common.models import District, Region
 from order.models import Delivery, Order
 
+from ..forms import CheckoutFormModel
+
 # @cache_page(60 * 15)
 def checkout(request):
     user_cart = get_user_cart(request)
@@ -18,47 +20,37 @@ def checkout(request):
     total_price = sum([item.price for item in cart_items])
     percent = user_cart.percent
     donation = total_price * Decimal(percent)
-    grand_total = total_price + donation
-    user_profile = Profile.objects.get(user=request.user)
-    order = Order.objects.get(customer__user = request.user)
-    regions = Region.objects.all()
-    districts = District.objects.all()
+    grand_total = total_price + donation 
+
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    initial = {
+        'region': profile.region,
+        'district': profile.district,
+        'street': profile.address,
+        'phone': profile.phone,
+        'email': profile.email,
+    }
+    order_obj = Order.objects.create(
+        customer=profile,
+        status="ACTIVE",
+        total_price=total_price,
+    )
+    order_obj.cart_items.add(cart_items)
+
+    checkout_form = CheckoutFormModel(initial=initial)
 
     if request.method == "POST":
-        region_id = request.POST.get("region")
-        district_id = request.POST.get("district")
-        street = request.POST.get("street")
-        building = request.POST.get("building")
-        house = request.POST.get("house")
-        postal_code = request.POST.get("postal_code")
-        phone = request.POST.get("phone")
-        email = request.POST.get("email")
-
-        region_obj = regions.get(id = region_id)
-        district_obj = districts.get(id = district_id)
-        delivery_obj = Delivery.objects.create(
-            order = order,
-            region = region_obj,
-            district = district_obj,
-            street = street,
-            building = building,
-            house = house,
-            postal_code = postal_code,
-            phone = phone,
-            email = email
-            )
-        
+        checkout_form = CheckoutFormModel(request.POST, initial=initial)
+        if checkout_form.is_valid():
+            checkout_form.save(order_obj=order_obj)
 
     context = {
-        "cart_items": cart_items,
-        "regions": Region.objects.filter(is_active=True),
-        "districts": District.objects.filter(is_active=True),
+        "cart_items":cart_items,
         "total_price": total_price,
         "donation": round(donation, 2),
         "grand_total": round(grand_total, 2),
-        "user_profile": user_profile,
-        "regions": regions,
-        "districts": districts,
+        "checkout_form": checkout_form,
     }
 
     return render(request, "order/checkout.html", context)
